@@ -17,7 +17,8 @@ async def list_templates():
             thumbnail="/thumbnails/minimal.png",
             layout="single-column",
             colorScheme=["#000000", "#ffffff"],
-            fontPair="Inter / Roboto"
+            fontPair="Inter / Roboto",
+            category="Minimal"
         ),
         TemplateConfigModel(
             id="modern",
@@ -25,7 +26,8 @@ async def list_templates():
             thumbnail="/thumbnails/modern.png",
             layout="two-column",
             colorScheme=["#4f46e5", "#ffffff"],
-            fontPair="Montserrat / Open Sans"
+            fontPair="Montserrat / Open Sans",
+            category="Modern"
         ),
         TemplateConfigModel(
             id="ats-friendly",
@@ -33,7 +35,8 @@ async def list_templates():
             thumbnail="/thumbnails/ats.png",
             layout="single-column",
             colorScheme=["#000000", "#ffffff"],
-            fontPair="Arial / Times New Roman"
+            fontPair="Arial / Times New Roman",
+            category="ATS-Friendly"
         )
     ]
 

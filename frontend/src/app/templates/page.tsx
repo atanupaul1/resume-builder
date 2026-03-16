@@ -4,16 +4,30 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Search01Icon, FilterIcon, SparklesIcon } from '@hugeicons/core-free-icons';
+import { Search01Icon, FilterIcon, SparklesIcon, Tick01Icon } from '@hugeicons/core-free-icons';
 import { resumeApi } from '@/lib/api';
 import { TemplateConfig } from '@/lib/types';
 import { Sticker } from '@/components/ui/Sticker';
+import { MinimalistCard } from '@/components/ui/MinimalistCard';
+import { CreativeCard } from '@/components/ui/CreativeCard';
+import { ATSCard } from '@/components/ui/ATSCard';
 import { useRouter } from 'next/navigation';
+
+const CATEGORIES = ['All', 'Minimal', 'Modern', 'Creative', 'ATS-Friendly'] as const;
+type Category = typeof CATEGORIES[number];
 
 export default function TemplateGallery() {
   const [templates, setTemplates] = useState<TemplateConfig[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeFilter, setActiveFilter] = useState<Category>('All');
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const router = useRouter();
+
+  // Calculate counts based on categories
+  const getCount = (category: Category) => {
+    if (category === 'All') return templates.length;
+    return templates.filter(t => t.category === category).length;
+  };
 
   useEffect(() => {
     resumeApi.getTemplates().then((data: any) => {
@@ -44,17 +58,17 @@ export default function TemplateGallery() {
             <h1 className="text-5xl font-black tracking-tighter text-gray-900 mb-4">Choose your <span className="text-indigo-600">vibe.</span></h1>
             <p className="text-gray-500 font-medium">Pick a template to start building. You can change this later.</p>
           </div>
-          
+
           <div className="flex gap-4">
             <div className="relative group">
               <HugeiconsIcon icon={Search01Icon} size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600" />
-              <input 
-                type="text" 
-                placeholder="Search templates..." 
+              <input
+                type="text"
+                placeholder="Search templates..."
                 className="pl-12 pr-4 py-3 bg-white border border-gray-100 rounded-2xl w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition-all font-medium"
               />
             </div>
-            <button className="p-3 bg-white border border-gray-100 rounded-2xl text-gray-400 hover:text-indigo-600">
+            <button className="p-3 bg-white border border-gray-100 rounded-2xl text-gray-400 hover:text-indigo-600 transition-colors">
               <HugeiconsIcon icon={FilterIcon} size={20} />
             </button>
           </div>
@@ -62,76 +76,105 @@ export default function TemplateGallery() {
 
         {/* Filter Pills */}
         <div className="flex flex-wrap gap-3 mb-12">
-          {['All', 'Minimal', 'Modern', 'Creative', 'ATS-Friendly'].map((p, i) => (
-            <button key={p} className={`px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest transition-all ${i === 0 ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'bg-white border border-gray-100 text-gray-400 hover:border-indigo-100 hover:text-indigo-600'}`}>
-              {p}
-            </button>
-          ))}
+          {CATEGORIES.map((p) => {
+            const isActive = activeFilter === p;
+            const count = getCount(p);
+
+            return (
+              <button
+                key={p}
+                onClick={() => setActiveFilter(p)}
+                className={`flex items-center gap-2.5 px-6 py-2.5 rounded-full font-bold text-[11px] uppercase tracking-widest transition-all duration-300 ${isActive
+                    ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-100 scale-105'
+                    : 'bg-white border border-gray-100 text-gray-400 hover:border-indigo-100 hover:text-indigo-600 hover:bg-indigo-50/10'
+                  }`}
+              >
+                <span>{p}</span>
+                <span className={`flex items-center justify-center w-5 h-5 rounded-full text-[10px] transform transition-colors duration-300 ${isActive
+                    ? 'bg-white/20 text-white'
+                    : 'bg-indigo-50 text-indigo-400'
+                  }`}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Grid */}
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map(i => (
-              <div key={i} className="h-[400px] bg-white rounded-[32px] animate-pulse" />
+              <div key={i} className="h-[400px] bg-white rounded-[32px] animate-pulse shadow-sm" />
             ))}
           </div>
         ) : (
-          <motion.div 
+          <motion.div
             variants={container}
             initial="hidden"
             animate="show"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {templates.map((template) => (
-              <motion.div 
-                key={template.id} 
-                variants={item}
-                whileHover={{ y: -10 }}
-                className="group relative bg-white border border-gray-100 rounded-[32px] p-4 transition-all hover:shadow-2xl hover:shadow-indigo-50"
-              >
-                {/* Popular Badge */}
-                {template.id === 'minimal' && (
-                  <div className="absolute -top-10 -right-8 z-20 pointer-events-none transform hover:scale-110 transition-transform">
-                     <Sticker pack="yippy" scene="celebrate" size={140} rotate={10} />
-                  </div>
-                )}
+            {templates
+              .filter(t => activeFilter === 'All' || t.category === activeFilter)
+              .map((template) => {
+                const isSelected = selectedId === template.id;
+                const handleSelect = () => {
+                  setSelectedId(template.id);
+                  router.push('/builder');
+                };
 
-                <div className="relative aspect-[3/4] bg-gray-50 rounded-[24px] overflow-hidden mb-6 border-2 border-gray-50 group-hover:border-indigo-100 transition-colors">
-                  {/* Thumbnail Placeholder */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center text-gray-300">
-                    <HugeiconsIcon icon={SparklesIcon} size={48} className="mb-4 opacity-50" />
-                    <span className="font-black uppercase tracking-tighter text-2xl">{template.name}</span>
-                  </div>
-                  
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-indigo-600/0 group-hover:bg-indigo-600/10 transition-colors flex items-center justify-center">
-                    <button 
-                      onClick={() => router.push('/builder')}
-                      className="px-8 py-3 bg-white text-indigo-600 rounded-xl font-bold opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all shadow-xl active:scale-95"
-                    >
-                      Use this template
-                    </button>
-                  </div>
-                </div>
+                return (
+                  <motion.div key={template.id} variants={item}>
+                    {template.id === 'minimal' ? (
+                      <div onClick={handleSelect}>
+                        <MinimalistCard isSelected={isSelected} />
+                      </div>
+                    ) : template.id === 'modern' ? (
+                      <div onClick={handleSelect}>
+                        <CreativeCard isSelected={isSelected} />
+                      </div>
+                    ) : template.id === 'ats-friendly' ? (
+                      <div onClick={handleSelect}>
+                        <ATSCard isSelected={isSelected} />
+                      </div>
+                    ) : (
+                      <div
+                        onClick={handleSelect}
+                        className={`group relative bg-white border rounded-[32px] p-4 transition-all cursor-pointer hover:shadow-2xl hover:shadow-indigo-50 ${isSelected ? 'border-indigo-600 ring-4 ring-indigo-600/5 bg-indigo-50/10' : 'border-gray-100 hover:border-indigo-100'
+                          }`}
+                      >
+                        {/* Success Badge */}
+                        {isSelected && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="absolute top-4 right-4 z-40 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white"
+                          >
+                            <HugeiconsIcon icon={Tick01Icon} size={14} className="text-white" />
+                          </motion.div>
+                        )}
 
-                <div className="px-2">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xl font-black tracking-tight text-gray-900">{template.name}</h3>
-                    <div className="flex gap-1">
-                      {template.colorScheme.map((c: string) => (
-                        <div key={c} className="w-3 h-3 rounded-full border border-gray-100" style={{ backgroundColor: c }} />
-                      ))}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                    <span>{template.layout}</span>
-                    <span className="w-1 h-1 rounded-full bg-gray-200" />
-                    <span>{template.fontPair}</span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                        <div className="relative aspect-[3/4] bg-gray-50 rounded-[24px] overflow-hidden mb-6 border-2 border-gray-50">
+                          <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center text-gray-300">
+                            <HugeiconsIcon icon={SparklesIcon} size={48} className="mb-4 opacity-50" />
+                            <span className="font-black uppercase tracking-tighter text-2xl">{template.name}</span>
+                          </div>
+                        </div>
+
+                        <div className="px-2">
+                          <h3 className="text-lg font-semibold text-slate-900 tracking-tight font-sans">{template.name}</h3>
+                          <div className={`mt-4 px-6 py-2 text-xs font-bold rounded-xl shadow-xl flex items-center justify-center gap-2 transition-all duration-300 ${isSelected ? 'bg-green-600 text-white' : 'bg-slate-900 text-white opacity-0 group-hover:opacity-100'
+                            }`}>
+                            {isSelected && <HugeiconsIcon icon={Tick01Icon} size={14} />}
+                            {isSelected ? 'Selected' : 'Use Template'}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+                );
+              })}
           </motion.div>
         )}
       </div>
