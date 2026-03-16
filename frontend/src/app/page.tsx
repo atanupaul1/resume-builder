@@ -30,7 +30,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 selection:bg-indigo-100">
+    <div className="min-h-screen bg-transparent selection:bg-indigo-100">
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -130,7 +130,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-gray-100 bg-white">
+      <footer className="py-12 border-t border-gray-100 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
             <HugeiconsIcon icon={SparklesIcon} size={20} className="text-indigo-600" />

@@ -4,7 +4,8 @@
 import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, Plus } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { CheckmarkCircle02Icon, PlusSignIcon } from '@hugeicons/core-free-icons';
 import { SectionType } from '@/lib/types';
 
 interface DraggableSectionProps {
@@ -64,7 +65,7 @@ export const DraggableSection = ({
               exit={{ scale: 0, opacity: 0 }}
               className="absolute top-3 right-3 text-green-500"
             >
-              <CheckCircle size={16} fill="currentColor" className="text-white fill-green-500" />
+              <HugeiconsIcon icon={CheckmarkCircle02Icon} size={16} fill="currentColor" className="text-white fill-green-500" />
             </motion.div>
           )}
         </AnimatePresence>

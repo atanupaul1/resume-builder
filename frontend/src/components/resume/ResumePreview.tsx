@@ -10,13 +10,13 @@ const SectionRenderer: React.FC<{ section: ResumeSection; theme: any }> = ({ sec
   // Simplistic rendering for the preview
   return (
     <div className="mb-6">
-      <h3 
-        className="text-lg font-bold border-b mb-2" 
+      <h3
+        className="text-lg font-bold border-b mb-2"
         style={{ color: theme.primaryColor, borderColor: '#eee', fontFamily: theme.fontFamily }}
       >
         {section.title}
       </h3>
-      <div 
+      <div
         className="text-gray-700 whitespace-pre-wrap"
         style={{ fontSize: theme.fontSize, lineHeight: '1.6' }}
       >
@@ -33,7 +33,7 @@ export const ResumePreview = () => {
   return (
     <div className="bg-white shadow-2xl overflow-hidden relative origin-top">
       {/* A4 Aspect Ratio Container: 595px x 842px at 72dpi */}
-      <div 
+      <div
         className="w-[595px] min-h-[842px] bg-white p-[40px] shadow-inner flex flex-col"
         style={{ fontFamily: theme.fontFamily }}
       >
@@ -51,7 +51,7 @@ export const ResumePreview = () => {
         {/* Sections */}
         <div className="flex-1">
           {sections.sort((a: any, b: any) => a.order - b.order).map((section: any) => (
-            <div 
+            <div
               key={section.id}
               className={`transition-all ${selectedSectionId === section.id ? 'ring-2 ring-indigo-500 ring-offset-8 rounded-sm' : ''}`}
             >

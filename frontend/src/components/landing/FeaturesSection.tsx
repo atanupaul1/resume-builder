@@ -112,7 +112,7 @@ export const FeaturesSection = () => {
   }, [isHoveringPdf, pdfProgress]);
 
   return (
-    <section className="py-24 bg-white px-4">
+    <section className="py-24 bg-transparent px-4">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-20">

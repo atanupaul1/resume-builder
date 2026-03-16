@@ -1,171 +1,159 @@
-// frontend/app/builder/page.tsx
-'use client';
+"use client";
+import { useState, useCallback } from "react";
+import { ResumeData, SectionKey, defaultResumeData, DEFAULT_SECTION_ORDER } from "@/types/resume";
+import SectionPanel from "@/components/builder/SectionPanel";
+import FormPanel from "@/components/builder/FormPanel";
+import ResumeCanvas from "@/components/builder/ResumeCanvas";
+import TemplateSwitcher from "@/components/builder/TemplateSwitcher";
+import Link from "next/link";
 
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { HugeiconsIcon } from '@hugeicons/react';
-import { 
-  ArrowLeft01Icon, 
-  FloppyDiskIcon, 
-  EyeIcon, 
-  Download02Icon,
-  SparklesIcon,
-  Settings03Icon
-} from '@hugeicons/core-free-icons';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { SectionSidebar } from '@/components/canvas/SectionSidebar';
-import { Canvas } from '@/components/canvas/Canvas';
-import { AIPanel } from '@/components/panels/AIPanel';
-import { ResumePreview } from '@/components/resume/ResumePreview';
-import { useResumeStore } from '@/lib/resumeStore';
-import { DndContext, DragEndEvent, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter } from '@dnd-kit/core';
-import { arrayMove } from '@dnd-kit/sortable';
-import { ATSScoreWidget } from '@/components/canvas/ATSScoreWidget';
+function getCompletionMap(data: ResumeData): Partial<Record<SectionKey, boolean>> {
+  return {
+    personalInfo: !!(data.personalInfo.fullName && data.personalInfo.email),
+    summary: data.summary.trim().length > 20,
+    workExperience: data.workExperience.length > 0,
+    education: data.education.length > 0,
+    skills: data.skillGroups.length > 0,
+    contact: !!(data.personalInfo.email || data.personalInfo.phone),
+  };
+}
 
 export default function BuilderPage() {
-  const { resume, isPreviewMode, togglePreviewMode, saveResume, addSection } = useResumeStore();
-  const router = useRouter();
-  const [activeId, setActiveId] = React.useState<string | null>(null);
+  const [resumeData, setResumeData] = useState<ResumeData>({
+    ...defaultResumeData,
+    sectionOrder: [...DEFAULT_SECTION_ORDER],
+  });
+  const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
+  const [resumeTitle, setResumeTitle] = useState("Untitled Resume");
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    })
-  );
+  const handleChange = useCallback((data: ResumeData) => {
+    setResumeData(data);
+    setSaved(false);
+  }, []);
 
-  const handleDragStart = (event: DragStartEvent) => {
-    setActiveId(event.active.id as string);
+  const handleReorder = useCallback((newOrder: SectionKey[]) => {
+    setResumeData((prev) => ({ ...prev, sectionOrder: newOrder }));
+    setSaved(false);
+  }, []);
+
+  const handleSave = () => {
+    try {
+      localStorage.setItem("resumeData", JSON.stringify(resumeData));
+      localStorage.setItem("resumeTitle", resumeTitle);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch { /* silently fail */ }
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    setActiveId(null);
-
-    if (!over) return;
-
-    // Sidebar to Canvas Drop
-    if (over.id === 'canvas-drop-zone' && active.data.current?.isSidebarItem) {
-      addSection(active.data.current.type);
-      return;
-    }
-
-    // Internal Canvas Reordering
-    if (active.id !== over.id && !active.data.current?.isSidebarItem) {
-      const oldIndex = resume.sections.findIndex((s) => s.id === active.id);
-      const newIndex = resume.sections.findIndex((s) => s.id === over.id);
-      
-      const newSections = arrayMove(resume.sections, oldIndex, newIndex);
-      useResumeStore.getState().reorderSections(newSections);
+  const handleExportPDF = async () => {
+    setExporting(true);
+    try {
+      const html2pdf = (await import("html2pdf.js")).default;
+      const element = document.getElementById("resume-canvas");
+      if (!element) return;
+      const filename = resumeTitle ? `${resumeTitle.replace(/\s+/g, "_")}.pdf` : "resume.pdf";
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const opt: any = {
+        margin: 0, filename,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true, width: 794 },
+        jsPDF: { unit: "px", format: [794, 1123], orientation: "portrait", hotfixes: ["px_scaling"] },
+      };
+      await html2pdf().set(opt).from(element).save();
+    } catch (err) {
+      console.error("PDF export failed:", err);
+      alert("Export failed. Please try again.");
+    } finally {
+      setExporting(false);
     }
   };
+
+  const completionMap = getCompletionMap(resumeData);
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
+    <div className="h-screen flex flex-col bg-white overflow-hidden">
       {/* Top Bar */}
-      <nav className="h-16 flex-shrink-0 bg-white border-b border-gray-100 px-4 flex items-center justify-between z-40">
-        <div className="flex items-center gap-4">
-          <Link href="/templates" className="p-2 hover:bg-gray-50 rounded-xl text-gray-400 group transition-colors">
-            <HugeiconsIcon icon={ArrowLeft01Icon} size={20} className="group-hover:-translate-x-1 transition-transform" />
-          </Link>
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-indigo-600 rounded-lg shadow-lg shadow-indigo-100">
-               <HugeiconsIcon icon={SparklesIcon} size={16} color="white" />
-            </div>
-            <input 
-              type="text" 
-              value={resume.title}
-              onChange={() => {}} // Store update logic
-              className="font-bold text-gray-900 border-none bg-transparent focus:ring-0 w-48 focus:bg-gray-50 rounded-lg px-2"
-            />
-          </div>
-        </div>
-
+      <header className="flex items-center justify-between px-5 py-3 border-b border-gray-100 bg-white z-10 flex-shrink-0">
         <div className="flex items-center gap-3">
-          <button 
-            onClick={() => togglePreviewMode()}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
-              isPreviewMode ? 'bg-indigo-600 text-white' : 'text-gray-500 hover:bg-gray-50'
-            }`}
-          >
-            <HugeiconsIcon icon={EyeIcon} size={18} />
-            {isPreviewMode ? 'Exit Preview' : 'Preview'}
-          </button>
-          
-          <button 
-            onClick={() => saveResume()}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-100 text-gray-900 rounded-xl text-sm font-bold hover:border-indigo-100 hover:text-indigo-600 transition-all shadow-sm"
-          >
-            <HugeiconsIcon icon={FloppyDiskIcon} size={18} />
-            Save
-          </button>
+          <Link href="/" className="text-gray-400 hover:text-gray-600 transition-colors p-1">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </Link>
+          <div className="w-px h-5 bg-gray-200" />
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-indigo-600 rounded-md flex items-center justify-center">
+              <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            {isEditingTitle ? (
+              <input autoFocus
+                className="text-sm font-medium text-gray-800 border-b border-indigo-400 outline-none bg-transparent px-1"
+                value={resumeTitle}
+                onChange={(e) => setResumeTitle(e.target.value)}
+                onBlur={() => setIsEditingTitle(false)}
+                onKeyDown={(e) => e.key === "Enter" && setIsEditingTitle(false)}
+              />
+            ) : (
+              <button className="text-sm font-medium text-gray-800 hover:text-indigo-600 transition-colors"
+                onClick={() => setIsEditingTitle(true)}>{resumeTitle}</button>
+            )}
+          </div>
+        </div>
 
-          <button 
-            onClick={() => router.push('/export')}
-            className="flex items-center gap-2 px-5 py-2 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-all shadow-lg shadow-gray-200 active:scale-95"
-          >
-            <HugeiconsIcon icon={Download02Icon} size={18} />
-            Export
+        <div className="flex items-center gap-2">
+          <button onClick={handleSave}
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all
+              ${saved ? "border-emerald-300 text-emerald-600 bg-emerald-50" : "border-gray-200 text-gray-600 hover:bg-gray-50"}`}>
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+            </svg>
+            {saved ? "Saved!" : "Save"}
+          </button>
+          <button onClick={handleExportPDF} disabled={exporting}
+            className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-medium bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+            {exporting ? (
+              <><svg className="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>Exporting…</>
+            ) : (
+              <><svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>Export PDF</>
+            )}
           </button>
         </div>
-      </nav>
+      </header>
 
-      {/* Main Workspace */}
-      <DndContext 
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      >
-        <main className="flex-1 flex overflow-hidden relative">
-          <AnimatePresence mode="wait">
-            {!isPreviewMode && (
-              <motion.div
-                key="sidebar"
-                initial={{ x: -240 }}
-                animate={{ x: 0 }}
-                exit={{ x: -240 }}
-                className="flex flex-shrink-0"
-              >
-                <SectionSidebar />
-              </motion.div>
-            )}
-          </AnimatePresence>
+      {/* Main layout */}
+      <div className="flex flex-1 overflow-hidden">
+        <SectionPanel
+          activeSection={activeSection}
+          onSelect={(key) => setActiveSection(activeSection === key ? null : key)}
+          completionMap={completionMap}
+          sectionOrder={resumeData.sectionOrder}
+          onReorder={handleReorder}
+        />
 
-          <div className="flex-1 overflow-hidden flex flex-col items-center justify-start py-8 bg-slate-50">
-             <AnimatePresence mode="wait">
-               {isPreviewMode ? (
-                 <motion.div 
-                   key="preview"
-                   initial={{ opacity: 0, scale: 0.9 }}
-                   animate={{ opacity: 1, scale: 1 }}
-                   exit={{ opacity: 0, scale: 0.9 }}
-                   className="flex-1 overflow-y-auto w-full flex justify-center pb-20"
-                 >
-                   <ResumePreview />
-                 </motion.div>
-               ) : (
-                 <motion.div 
-                   key="canvas"
-                   initial={{ opacity: 0 }}
-                   animate={{ opacity: 1 }}
-                   exit={{ opacity: 0 }}
-                   className="w-full h-full flex items-start justify-center"
-                 >
-                   <Canvas activeId={activeId} />
-                 </motion.div>
-               )}
-             </AnimatePresence>
-          </div>
+        {activeSection && (
+          <FormPanel
+            activeSection={activeSection}
+            data={resumeData}
+            onChange={handleChange}
+            onClose={() => setActiveSection(null)}
+          />
+        )}
 
-          <AIPanel />
-        </main>
-        {!isPreviewMode && <ATSScoreWidget />}
-      </DndContext>
-
-      {/* Floating Action Buttons or mobile navigation could go here */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <TemplateSwitcher
+            active={resumeData.template}
+            onChange={(t) => handleChange({ ...resumeData, template: t })}
+            accentColor={resumeData.accentColor}
+            onAccentChange={(c) => handleChange({ ...resumeData, accentColor: c })}
+          />
+          <ResumeCanvas data={resumeData} />
+        </div>
+      </div>
     </div>
   );
 }

@@ -36,7 +36,7 @@ export default function ExportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-transparent flex flex-col">
       {/* Header */}
       <nav className="h-16 px-6 bg-white border-b border-gray-100 flex items-center justify-between">
         <Link href="/builder" className="flex items-center gap-2 text-gray-500 hover:text-gray-900 font-bold transition-colors">

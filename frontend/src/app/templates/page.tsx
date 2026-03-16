@@ -50,7 +50,7 @@ export default function TemplateGallery() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 px-4 pb-20">
+    <div className="min-h-screen bg-transparent pt-24 px-4 pb-20">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
@@ -85,14 +85,14 @@ export default function TemplateGallery() {
                 key={p}
                 onClick={() => setActiveFilter(p)}
                 className={`flex items-center gap-2.5 px-6 py-2.5 rounded-full font-bold text-[11px] uppercase tracking-widest transition-all duration-300 ${isActive
-                    ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-100 scale-105'
-                    : 'bg-white border border-gray-100 text-gray-400 hover:border-indigo-100 hover:text-indigo-600 hover:bg-indigo-50/10'
+                  ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-100 scale-105'
+                  : 'bg-white border border-gray-100 text-gray-400 hover:border-indigo-100 hover:text-indigo-600 hover:bg-indigo-50/10'
                   }`}
               >
                 <span>{p}</span>
                 <span className={`flex items-center justify-center w-5 h-5 rounded-full text-[10px] transform transition-colors duration-300 ${isActive
-                    ? 'bg-white/20 text-white'
-                    : 'bg-indigo-50 text-indigo-400'
+                  ? 'bg-white/20 text-white'
+                  : 'bg-indigo-50 text-indigo-400'
                   }`}>
                   {count}
                 </span>

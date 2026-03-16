@@ -8,7 +8,7 @@ interface ResumeState {
   selectedSectionId: string | null;
   isAIPanelOpen: boolean;
   isPreviewMode: boolean;
-  
+
   // Actions
   addSection: (type: SectionType) => void;
   removeSection: (id: string) => void;
@@ -52,7 +52,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
       position: { x: 0, y: 0 },
       order: get().resume.sections.length,
     };
-    
+
     set((state) => ({
       resume: {
         ...state.resume,
@@ -75,7 +75,7 @@ export const useResumeStore = create<ResumeState>((set, get) => ({
     set((state) => ({
       resume: {
         ...state.resume,
-        sections: state.resume.sections.map((s) => 
+        sections: state.resume.sections.map((s) =>
           s.id === id ? { ...s, ...updates } : s
         ),
       },

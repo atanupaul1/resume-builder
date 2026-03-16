@@ -7,14 +7,15 @@ import { useResumeStore } from '@/lib/resumeStore';
 import { SectionType } from '@/lib/types';
 import { DraggableSection } from './DraggableSection';
 
+import { HugeiconsIcon } from '@hugeicons/react';
 import { 
-  UserCircle, 
-  Briefcase, 
-  GraduationCap, 
-  Settings2, 
-  Type,
-  Plus
-} from 'lucide-react';
+  UserCircleIcon, 
+  Briefcase01Icon, 
+  SchoolIcon, 
+  Settings02Icon, 
+  TextIcon,
+  PlusSignIcon
+} from '@hugeicons/core-free-icons';
 
 interface SectionItem {
   type: SectionType;
@@ -24,11 +25,11 @@ interface SectionItem {
 }
 
 const SECTION_TEMPLATES: SectionItem[] = [
-  { type: 'summary', label: 'Professional Summary', icon: <Type size={20} />, description: 'Hook recruiters with a 3-sentence intro.' },
-  { type: 'experience', label: 'Work Experience', icon: <Briefcase size={20} />, description: 'Highlight your roles and achievements.' },
-  { type: 'education', label: 'Education', icon: <GraduationCap size={20} />, description: 'Degrees, certifications, and academic info.' },
-  { type: 'skills', label: 'Skills & Tools', icon: <Settings2 size={20} />, description: 'List your technical and soft skills.' },
-  { type: 'contact', label: 'Contact Info', icon: <UserCircle size={20} />, description: 'Email, phone, and social links.' },
+  { type: 'summary', label: 'Professional Summary', icon: <HugeiconsIcon icon={TextIcon} size={20} />, description: 'Hook recruiters with a 3-sentence intro.' },
+  { type: 'experience', label: 'Work Experience', icon: <HugeiconsIcon icon={Briefcase01Icon} size={20} />, description: 'Highlight your roles and achievements.' },
+  { type: 'education', label: 'Education', icon: <HugeiconsIcon icon={SchoolIcon} size={20} />, description: 'Degrees, certifications, and academic info.' },
+  { type: 'skills', label: 'Skills & Tools', icon: <HugeiconsIcon icon={Settings02Icon} size={20} />, description: 'List your technical and soft skills.' },
+  { type: 'contact', label: 'Contact Info', icon: <HugeiconsIcon icon={UserCircleIcon} size={20} />, description: 'Email, phone, and social links.' },
 ];
 
 export const SectionSidebar = () => {
@@ -67,7 +68,7 @@ export const SectionSidebar = () => {
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Add Sections</h3>
         <div className="w-5 h-5 bg-indigo-50 rounded flex items-center justify-center">
-          <Plus size={12} className="text-indigo-600" />
+          <HugeiconsIcon icon={PlusSignIcon} size={12} className="text-indigo-600" />
         </div>
       </div>
       

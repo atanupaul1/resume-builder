@@ -3,7 +3,16 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Target, Zap, Info, X, CheckCircle2, Briefcase, Type } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { 
+  Target02Icon, 
+  FlashIcon, 
+  InformationCircleIcon, 
+  Cancel01Icon, 
+  CheckmarkCircle02Icon, 
+  Briefcase01Icon, 
+  TextIcon 
+} from '@hugeicons/core-free-icons';
 import { useResumeStore } from '@/lib/resumeStore';
 
 export const ATSScoreWidget = () => {
@@ -24,7 +33,7 @@ export const ATSScoreWidget = () => {
     if (hasSkills) {
       currentScore += 20;
     } else {
-      currentTips.push({ text: "Add a 'Skills' section", points: 20, icon: <Zap size={14} className="text-yellow-500" /> });
+      currentTips.push({ text: "Add a 'Skills' section", points: 20, icon: <HugeiconsIcon icon={FlashIcon} size={14} className="text-yellow-500" /> });
     }
 
     if (hasExperience) {
@@ -34,23 +43,23 @@ export const ATSScoreWidget = () => {
       if (expContent.length > 100) {
           currentScore += 10;
       } else {
-          currentTips.push({ text: "Expand experience details", points: 10, icon: <Target size={14} className="text-indigo-500" /> });
+          currentTips.push({ text: "Expand experience details", points: 10, icon: <HugeiconsIcon icon={Target02Icon} size={14} className="text-indigo-500" /> });
       }
       
       // Look for numbers (quantifying results)
       if (/\d+/.test(expContent)) {
           currentScore += 10;
       } else {
-          currentTips.push({ text: "Quantify results with numbers", points: 10, icon: <CheckCircle2 size={14} className="text-green-500" /> });
+          currentTips.push({ text: "Quantify results with numbers", points: 10, icon: <HugeiconsIcon icon={CheckmarkCircle02Icon} size={14} className="text-green-500" /> });
       }
     } else {
-      currentTips.push({ text: "Add Work Experience", points: 15, icon: <Briefcase size={14} className="text-indigo-500" /> });
+      currentTips.push({ text: "Add Work Experience", points: 15, icon: <HugeiconsIcon icon={Briefcase01Icon} size={14} className="text-indigo-500" /> });
     }
 
     if (hasSummary) {
       currentScore += 10;
     } else {
-      currentTips.push({ text: "Add a Professional Summary", points: 10, icon: <Type size={14} className="text-blue-500" /> });
+      currentTips.push({ text: "Add a Professional Summary", points: 10, icon: <HugeiconsIcon icon={TextIcon} size={14} className="text-blue-500" /> });
     }
 
     if (hasEducation) {
@@ -87,14 +96,14 @@ export const ATSScoreWidget = () => {
           >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <Target size={16} className="text-indigo-600" />
+                <HugeiconsIcon icon={Target02Icon} size={16} className="text-indigo-600" />
                 <h4 className="font-bold text-slate-900 text-sm">Optimization Tips</h4>
               </div>
               <button 
                 onClick={() => setIsOpen(false)}
                 className="p-1 hover:bg-slate-100 rounded-full transition-colors"
               >
-                <X size={14} className="text-slate-400" />
+                <HugeiconsIcon icon={Cancel01Icon} size={14} className="text-slate-400" />
               </button>
             </div>
 
@@ -118,7 +127,7 @@ export const ATSScoreWidget = () => {
               ) : (
                 <div className="py-4 text-center">
                    <div className="w-10 h-10 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                      <CheckCircle2 size={20} />
+                      <HugeiconsIcon icon={CheckmarkCircle02Icon} size={20} />
                    </div>
                    <p className="text-xs font-bold text-slate-900">Your resume is optimized!</p>
                 </div>
