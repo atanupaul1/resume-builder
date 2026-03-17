@@ -37,7 +37,10 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({ section }) => {
   };
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
       ref={setNodeRef}
       style={style}
       className={`relative group mb-4 rounded-xl border-2 transition-all cursor-pointer ${
@@ -64,7 +67,7 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({ section }) => {
             <h4 className="font-semibold text-gray-900">{section.title}</h4>
           </div>
           <p className="text-sm text-gray-500 line-clamp-1">
-            {section.content || 'Click to edit content...'}
+            {section.content || 'Add your details...'}
           </p>
         </div>
 
@@ -99,6 +102,6 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({ section }) => {
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         />
       )}
-    </div>
+    </motion.div>
   );
 };

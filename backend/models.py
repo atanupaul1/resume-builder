@@ -50,3 +50,4 @@ class TemplateConfigModel(BaseModel):
     layout: str
     colorScheme: List[str]
     fontPair: str
+    category: str

@@ -19,10 +19,48 @@ import { Canvas } from '@/components/canvas/Canvas';
 import { AIPanel } from '@/components/panels/AIPanel';
 import { ResumePreview } from '@/components/resume/ResumePreview';
 import { useResumeStore } from '@/lib/resumeStore';
+import { DndContext, DragEndEvent, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter } from '@dnd-kit/core';
+import { arrayMove } from '@dnd-kit/sortable';
+import { ATSScoreWidget } from '@/components/canvas/ATSScoreWidget';
 
 export default function BuilderPage() {
-  const { resume, isPreviewMode, togglePreviewMode, saveResume } = useResumeStore();
+  const { resume, isPreviewMode, togglePreviewMode, saveResume, addSection } = useResumeStore();
   const router = useRouter();
+  const [activeId, setActiveId] = React.useState<string | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
+
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveId(event.active.id as string);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    setActiveId(null);
+
+    if (!over) return;
+
+    // Sidebar to Canvas Drop
+    if (over.id === 'canvas-drop-zone' && active.data.current?.isSidebarItem) {
+      addSection(active.data.current.type);
+      return;
+    }
+
+    // Internal Canvas Reordering
+    if (active.id !== over.id && !active.data.current?.isSidebarItem) {
+      const oldIndex = resume.sections.findIndex((s) => s.id === active.id);
+      const newIndex = resume.sections.findIndex((s) => s.id === over.id);
+      
+      const newSections = arrayMove(resume.sections, oldIndex, newIndex);
+      useResumeStore.getState().reorderSections(newSections);
+    }
+  };
 
   return (
     <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
@@ -75,49 +113,57 @@ export default function BuilderPage() {
       </nav>
 
       {/* Main Workspace */}
-      <main className="flex-1 flex overflow-hidden relative">
-        <AnimatePresence mode="wait">
-          {!isPreviewMode && (
-            <motion.div
-              key="sidebar"
-              initial={{ x: -240 }}
-              animate={{ x: 0 }}
-              exit={{ x: -240 }}
-              className="flex flex-shrink-0"
-            >
-              <SectionSidebar />
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <DndContext 
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <main className="flex-1 flex overflow-hidden relative">
+          <AnimatePresence mode="wait">
+            {!isPreviewMode && (
+              <motion.div
+                key="sidebar"
+                initial={{ x: -240 }}
+                animate={{ x: 0 }}
+                exit={{ x: -240 }}
+                className="flex flex-shrink-0"
+              >
+                <SectionSidebar />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        <div className="flex-1 overflow-hidden flex flex-col items-center justify-start py-8">
-           <AnimatePresence mode="wait">
-             {isPreviewMode ? (
-               <motion.div 
-                 key="preview"
-                 initial={{ opacity: 0, scale: 0.9 }}
-                 animate={{ opacity: 1, scale: 1 }}
-                 exit={{ opacity: 0, scale: 0.9 }}
-                 className="flex-1 overflow-y-auto w-full flex justify-center pb-20"
-               >
-                 <ResumePreview />
-               </motion.div>
-             ) : (
-               <motion.div 
-                 key="canvas"
-                 initial={{ opacity: 0 }}
-                 animate={{ opacity: 1 }}
-                 exit={{ opacity: 0 }}
-                 className="w-full h-full flex items-start justify-center"
-               >
-                 <Canvas />
-               </motion.div>
-             )}
-           </AnimatePresence>
-        </div>
+          <div className="flex-1 overflow-hidden flex flex-col items-center justify-start py-8 bg-slate-50">
+             <AnimatePresence mode="wait">
+               {isPreviewMode ? (
+                 <motion.div 
+                   key="preview"
+                   initial={{ opacity: 0, scale: 0.9 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   exit={{ opacity: 0, scale: 0.9 }}
+                   className="flex-1 overflow-y-auto w-full flex justify-center pb-20"
+                 >
+                   <ResumePreview />
+                 </motion.div>
+               ) : (
+                 <motion.div 
+                   key="canvas"
+                   initial={{ opacity: 0 }}
+                   animate={{ opacity: 1 }}
+                   exit={{ opacity: 0 }}
+                   className="w-full h-full flex items-start justify-center"
+                 >
+                   <Canvas activeId={activeId} />
+                 </motion.div>
+               )}
+             </AnimatePresence>
+          </div>
 
-        <AIPanel />
-      </main>
+          <AIPanel />
+        </main>
+        {!isPreviewMode && <ATSScoreWidget />}
+      </DndContext>
 
       {/* Floating Action Buttons or mobile navigation could go here */}
     </div>

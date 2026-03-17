@@ -51,4 +51,5 @@ export interface TemplateConfig {
   layout: 'single-column' | 'two-column';
   colorScheme: string[];
   fontPair: string;
+  category: 'Minimal' | 'Modern' | 'Creative' | 'ATS-Friendly';
 }

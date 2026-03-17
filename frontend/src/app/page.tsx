@@ -13,6 +13,7 @@ import {
   CheckmarkCircle02Icon
 } from '@hugeicons/core-free-icons';
 import { Sticker } from '@/components/ui/Sticker';
+import { FeaturesSection } from '@/components/landing/FeaturesSection';
 
 export default function LandingPage() {
   const container = {
@@ -101,36 +102,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-black tracking-tighter mb-4 text-gray-900">Everything you need.</h2>
-            <p className="text-gray-500 font-medium">Tools designed for modern recruitment.</p>
-          </div>
-
-          <motion.div 
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
-            {[
-              { icon: DragDropVerticalIcon, title: "Drag & drop builder", desc: "Reorder sections effortlessly. See changes in live A4 preview." },
-              { icon: SparklesIcon, title: "AI suggestions", desc: "Powered by Gemini 1.5. Quantified bullet points within one click." },
-              { icon: Download02Icon, title: "One-click PDF export", desc: "High-quality, ATS-optimized exports ready for application." }
-            ].map((f, i) => (
-              <motion.div key={i} variants={item} className="p-8 border border-gray-100 rounded-[32px] hover:border-indigo-100 hover:bg-indigo-50/10 transition-all group">
-                <div className="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-all transform group-hover:-rotate-6">
-                  <HugeiconsIcon icon={f.icon} size={28} />
-                </div>
-                <h3 className="text-2xl font-black tracking-tight mb-3 text-gray-900">{f.title}</h3>
-                <p className="text-gray-500 font-medium leading-relaxed">{f.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      <FeaturesSection />
 
       {/* CTA Section */}
       <section className="py-32 px-4">
