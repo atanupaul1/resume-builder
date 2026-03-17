@@ -35,7 +35,7 @@ export default function FormPanel({ activeSection, data, onChange, onClose }: Pr
   if (!activeSection) return null;
 
   return (
-    <div className="w-80 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col h-full">
+    <div className="w-96 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col h-full shadow-sm">
       {/* Header */}
       <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-gray-100">
         <div>

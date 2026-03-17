@@ -71,7 +71,7 @@ export interface ResumeData {
   education: Education[];
   skillGroups: SkillGroup[];
   contact: ContactInfo;
-  template: "minimal" | "modern" | "ats";
+  template: "minimal" | "modern" | "ats" | "executive" | "academic" | "tech";
   accentColor: string;
   sectionOrder: SectionKey[];
 }

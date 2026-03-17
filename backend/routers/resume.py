@@ -13,16 +13,16 @@ async def list_templates():
     return [
         TemplateConfigModel(
             id="minimal",
-            name="Minimalist Professional",
+            name="The Minimalist",
             thumbnail="/thumbnails/minimal.png",
             layout="single-column",
             colorScheme=["#000000", "#ffffff"],
             fontPair="Inter / Roboto",
-            category="Minimal"
+            category="Minimalist"
         ),
         TemplateConfigModel(
             id="modern",
-            name="Modern Creative",
+            name="The Modern",
             thumbnail="/thumbnails/modern.png",
             layout="two-column",
             colorScheme=["#4f46e5", "#ffffff"],
@@ -37,6 +37,33 @@ async def list_templates():
             colorScheme=["#000000", "#ffffff"],
             fontPair="Arial / Times New Roman",
             category="ATS-Friendly"
+        ),
+        TemplateConfigModel(
+            id="executive",
+            name="The Executive",
+            thumbnail="/thumbnails/executive.png",
+            layout="two-column",
+            colorScheme=["#1e3a8a", "#ffffff"],
+            fontPair="Georgia / Helvetica",
+            category="Corporate"
+        ),
+        TemplateConfigModel(
+            id="academic",
+            name="The Academic",
+            thumbnail="/thumbnails/academic.png",
+            layout="single-column",
+            colorScheme=["#581c87", "#ffffff"],
+            fontPair="Merriweather / Lato",
+            category="Academic"
+        ),
+        TemplateConfigModel(
+            id="tech",
+            name="The Tech",
+            thumbnail="/thumbnails/tech.png",
+            layout="two-column",
+            colorScheme=["#0f172a", "#38bdf8"],
+            fontPair="Fira Code / Roboto",
+            category="Tech"
         )
     ]
 

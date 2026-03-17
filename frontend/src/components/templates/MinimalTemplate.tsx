@@ -109,7 +109,7 @@ export default function MinimalTemplate({ data }: Props) {
   };
 
   return (
-    <div className="bg-white w-full min-h-full" style={{ fontFamily: "'Georgia','Times New Roman',serif", fontSize: "13px", lineHeight: "1.5", color: "#1a1a1a" }}>
+    <div className="bg-white w-full min-h-full" style={{ fontFamily: "'Georgia', 'Times New Roman', serif", fontSize: "13px", lineHeight: "1.5", color: "#1a1a1a" }}>
       <div style={{ padding: "48px 52px" }}>
         {sectionOrder.map((key) => sections[key])}
       </div>

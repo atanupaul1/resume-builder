@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { ResumeData, SectionKey, defaultResumeData, DEFAULT_SECTION_ORDER } from "@/types/resume";
 import SectionPanel from "@/components/builder/SectionPanel";
 import FormPanel from "@/components/builder/FormPanel";
@@ -23,6 +23,15 @@ export default function BuilderPage() {
     ...defaultResumeData,
     sectionOrder: [...DEFAULT_SECTION_ORDER],
   });
+
+  useEffect(() => {
+    const savedTemplate = localStorage.getItem("selectedTemplate");
+    if (savedTemplate) {
+      setResumeData(prev => ({ ...prev, template: savedTemplate as any }));
+      localStorage.removeItem("selectedTemplate");
+    }
+  }, []);
+
   const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
   const [resumeTitle, setResumeTitle] = useState("Untitled Resume");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -78,7 +87,7 @@ export default function BuilderPage() {
       {/* Top Bar */}
       <header className="flex items-center justify-between px-5 py-3 border-b border-gray-100 bg-white z-10 flex-shrink-0">
         <div className="flex items-center gap-3">
-          <Link href="/" className="text-gray-400 hover:text-gray-600 transition-colors p-1">
+          <Link href="/templates" className="text-gray-400 hover:text-gray-600 transition-colors p-1">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>

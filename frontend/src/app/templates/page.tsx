@@ -11,9 +11,12 @@ import { Sticker } from '@/components/ui/Sticker';
 import { MinimalistCard } from '@/components/ui/MinimalistCard';
 import { CreativeCard } from '@/components/ui/CreativeCard';
 import { ATSCard } from '@/components/ui/ATSCard';
+import { ExecutiveCard } from '@/components/ui/ExecutiveCard';
+import { AcademicCard } from '@/components/ui/AcademicCard';
+import { TechCard } from '@/components/ui/TechCard';
 import { useRouter } from 'next/navigation';
 
-const CATEGORIES = ['All', 'Minimal', 'Modern', 'Creative', 'ATS-Friendly'] as const;
+const CATEGORIES = ['All', 'Creative', 'Academic', 'Corporate', 'Tech', 'Minimalist', 'ATS-Friendly'] as const;
 type Category = typeof CATEGORIES[number];
 
 export default function TemplateGallery() {
@@ -54,28 +57,14 @@ export default function TemplateGallery() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-          <div>
-            <h1 className="text-5xl font-black tracking-tighter text-gray-900 mb-4">Choose your <span className="text-indigo-600">vibe.</span></h1>
-            <p className="text-gray-500 font-medium">Pick a template to start building. You can change this later.</p>
-          </div>
-
-          <div className="flex gap-4">
-            <div className="relative group">
-              <HugeiconsIcon icon={Search01Icon} size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600" />
-              <input
-                type="text"
-                placeholder="Search templates..."
-                className="pl-12 pr-4 py-3 bg-white border border-gray-100 rounded-2xl w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition-all font-medium"
-              />
-            </div>
-            <button className="p-3 bg-white border border-gray-100 rounded-2xl text-gray-400 hover:text-indigo-600 transition-colors">
-              <HugeiconsIcon icon={FilterIcon} size={20} />
-            </button>
+          <div className="text-center md:text-left w-full">
+            <h1 className="text-6xl font-black tracking-tighter text-gray-900 mb-4">Resume Template <span className="text-indigo-600">Gallery</span></h1>
+            <p className="text-xl text-gray-500 font-medium">Browse handcrafted resume templates for every profession. Customizable and free.</p>
           </div>
         </div>
 
         {/* Filter Pills */}
-        <div className="flex flex-wrap gap-3 mb-12">
+        <div className="flex flex-wrap justify-center gap-4 mb-16">
           {CATEGORIES.map((p) => {
             const isActive = activeFilter === p;
             const count = getCount(p);
@@ -84,9 +73,9 @@ export default function TemplateGallery() {
               <button
                 key={p}
                 onClick={() => setActiveFilter(p)}
-                className={`flex items-center gap-2.5 px-6 py-2.5 rounded-full font-bold text-[11px] uppercase tracking-widest transition-all duration-300 ${isActive
+                className={`flex items-center gap-2.5 px-8 py-3 rounded-full font-bold text-xs transition-all duration-300 ${isActive
                   ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-100 scale-105'
-                  : 'bg-white border border-gray-100 text-gray-400 hover:border-indigo-100 hover:text-indigo-600 hover:bg-indigo-50/10'
+                  : 'bg-white border border-gray-100 text-gray-500 hover:border-indigo-100 hover:text-indigo-600 hover:bg-indigo-50/10'
                   }`}
               >
                 <span>{p}</span>
@@ -103,9 +92,9 @@ export default function TemplateGallery() {
 
         {/* Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map(i => (
-              <div key={i} className="h-[400px] bg-white rounded-[32px] animate-pulse shadow-sm" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {[1, 2, 3, 4, 5, 6].map(i => (
+              <div key={i} className="h-[500px] bg-white rounded-[32px] animate-pulse shadow-sm" />
             ))}
           </div>
         ) : (
@@ -113,7 +102,7 @@ export default function TemplateGallery() {
             variants={container}
             initial="hidden"
             animate="show"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
           >
             {templates
               .filter(t => activeFilter === 'All' || t.category === activeFilter)
@@ -121,57 +110,44 @@ export default function TemplateGallery() {
                 const isSelected = selectedId === template.id;
                 const handleSelect = () => {
                   setSelectedId(template.id);
+                  // Map 'ats-friendly' to 'ats' for the builder state
+                  const templateKey = template.id === 'ats-friendly' ? 'ats' : template.id;
+                  localStorage.setItem('selectedTemplate', templateKey);
                   router.push('/builder');
                 };
 
                 return (
-                  <motion.div key={template.id} variants={item}>
-                    {template.id === 'minimal' ? (
-                      <div onClick={handleSelect}>
+                  <motion.div key={template.id} variants={item} className="w-full">
+                    <div onClick={handleSelect} className="w-full">
+                      {template.id === 'minimal' ? (
                         <MinimalistCard isSelected={isSelected} />
-                      </div>
-                    ) : template.id === 'modern' ? (
-                      <div onClick={handleSelect}>
+                      ) : template.id === 'modern' ? (
                         <CreativeCard isSelected={isSelected} />
-                      </div>
-                    ) : template.id === 'ats-friendly' ? (
-                      <div onClick={handleSelect}>
+                      ) : template.id === 'ats-friendly' ? (
                         <ATSCard isSelected={isSelected} />
-                      </div>
-                    ) : (
-                      <div
-                        onClick={handleSelect}
-                        className={`group relative bg-white border rounded-[32px] p-4 transition-all cursor-pointer hover:shadow-2xl hover:shadow-indigo-50 ${isSelected ? 'border-indigo-600 ring-4 ring-indigo-600/5 bg-indigo-50/10' : 'border-gray-100 hover:border-indigo-100'
-                          }`}
-                      >
-                        {/* Success Badge */}
-                        {isSelected && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="absolute top-4 right-4 z-40 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white"
-                          >
-                            <HugeiconsIcon icon={Tick01Icon} size={14} className="text-white" />
-                          </motion.div>
-                        )}
-
-                        <div className="relative aspect-[3/4] bg-gray-50 rounded-[24px] overflow-hidden mb-6 border-2 border-gray-50">
-                          <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center text-gray-300">
-                            <HugeiconsIcon icon={SparklesIcon} size={48} className="mb-4 opacity-50" />
-                            <span className="font-black uppercase tracking-tighter text-2xl">{template.name}</span>
+                      ) : template.id === 'executive' ? (
+                        <ExecutiveCard isSelected={isSelected} />
+                      ) : template.id === 'academic' ? (
+                        <AcademicCard isSelected={isSelected} />
+                      ) : template.id === 'tech' ? (
+                        <TechCard isSelected={isSelected} />
+                      ) : (
+                        <div
+                          className={`group relative bg-white border rounded-[32px] p-4 transition-all cursor-pointer hover:shadow-2xl hover:shadow-indigo-50 ${isSelected ? 'border-indigo-600 ring-4 ring-indigo-600/5 bg-indigo-50/10' : 'border-gray-100 hover:border-indigo-100'
+                            }`}
+                        >
+                          <div className="relative aspect-[3/4] bg-gray-50 rounded-[24px] overflow-hidden mb-6 border-2 border-gray-50">
+                            <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center text-gray-300">
+                              <HugeiconsIcon icon={SparklesIcon} size={48} className="mb-4 opacity-50" />
+                              <span className="font-black uppercase tracking-tighter text-2xl">{template.name}</span>
+                            </div>
+                          </div>
+                          <div className="px-2">
+                             <h3 className="text-lg font-semibold text-slate-900 tracking-tight font-sans">{template.name}</h3>
                           </div>
                         </div>
-
-                        <div className="px-2">
-                          <h3 className="text-lg font-semibold text-slate-900 tracking-tight font-sans">{template.name}</h3>
-                          <div className={`mt-4 px-6 py-2 text-xs font-bold rounded-xl shadow-xl flex items-center justify-center gap-2 transition-all duration-300 ${isSelected ? 'bg-green-600 text-white' : 'bg-slate-900 text-white opacity-0 group-hover:opacity-100'
-                            }`}>
-                            {isSelected && <HugeiconsIcon icon={Tick01Icon} size={14} />}
-                            {isSelected ? 'Selected' : 'Use Template'}
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </motion.div>
                 );
               })}

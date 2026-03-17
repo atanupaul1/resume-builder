@@ -3,6 +3,9 @@ import { ResumeData } from "@/types/resume";
 import MinimalTemplate from "@/components/templates/MinimalTemplate";
 import ModernTemplate from "@/components/templates/ModernTemplate";
 import ATSTemplate from "@/components/templates/ATSTemplate";
+import ExecutiveTemplate from "@/components/templates/ExecutiveTemplate";
+import AcademicTemplate from "@/components/templates/AcademicTemplate";
+import TechTemplate from "@/components/templates/TechTemplate";
 
 interface Props {
   data: ResumeData;
@@ -17,7 +20,7 @@ export default function ResumeCanvas({ data }: Props) {
     data.skillGroups.length > 0;
 
   return (
-    <div className="flex-1 bg-[#f0ede6] overflow-auto flex items-start justify-center py-8 px-4">
+    <div className="flex-1 bg-[#f3f2f0] overflow-auto flex items-start justify-center py-8 px-4">
       {/* A4 paper */}
       <div
         id="resume-canvas"
@@ -26,16 +29,16 @@ export default function ResumeCanvas({ data }: Props) {
       >
         {!hasAnyContent ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-            <div className="w-64 h-64 mb-4 flex items-center justify-center">
+            <div className="w-96 h-96 mb-6 flex items-center justify-center">
               <img
                 src="/Nothing-here.png"
                 alt="Empty Canvas"
-                className="w-full h-full object-contain opacity-70 block"
+                className="w-full h-full object-contain opacity-80 block"
               />
             </div>
-            <h3 className="text-gray-400 font-sans text-sm font-medium">Your canvas is empty</h3>
-            <p className="text-gray-300 font-sans text-xs mt-1">
-              Click any section on the left to start filling in your resume
+            <h3 className="text-gray-700 font-sans text-lg font-bold">Your canvas is empty</h3>
+            <p className="text-gray-500 font-sans text-sm mt-2 max-w-xs">
+              Click any section on the left to start filling in your resume and see the magic happen.
             </p>
           </div>
         ) : (
@@ -43,6 +46,9 @@ export default function ResumeCanvas({ data }: Props) {
             {data.template === "minimal" && <MinimalTemplate data={data} />}
             {data.template === "modern"  && <ModernTemplate data={data} />}
             {data.template === "ats"     && <ATSTemplate data={data} />}
+            {data.template === "executive" && <ExecutiveTemplate data={data} />}
+            {data.template === "academic" && <AcademicTemplate data={data} />}
+            {data.template === "tech" && <TechTemplate data={data} />}
           </>
         )}
       </div>

@@ -43,23 +43,49 @@ export const CreativeCard = ({ isSelected }: CreativeCardProps) => {
           transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
           whileHover={{ scale: 1.05 }}
         >
-          {/* Creative 2-Column Header */}
-          <div className="flex gap-4 items-start border-b border-slate-100 pb-6">
-            <div className="w-16 h-16 rounded-full shimmer shrink-0 border-2 border-white shadow-sm" />
-            <div className="space-y-3 flex-1 pt-1">
-              <div className="h-4 w-full shimmer rounded-full" />
-              <div className="h-2 w-2/3 shimmer rounded-full" />
+          {/* Modern 2-Column Header with Color Accent */}
+          <div className="relative -mx-6 -mt-6 mb-4">
+            <div className="h-16 bg-indigo-600/10 w-full relative overflow-hidden">
+              <div className="absolute inset-0 shimmer opacity-30" />
+            </div>
+            <div className="absolute top-1/2 left-6 -translate-y-1/2 flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-white shadow-sm shimmer border-2 border-indigo-50" />
+              <div className="space-y-1.5">
+                <div className="h-3 w-24 shimmer rounded-full bg-indigo-200" />
+                <div className="h-1.5 w-16 shimmer rounded-full bg-indigo-100 opacity-60" />
+              </div>
             </div>
           </div>
 
-          <div className="flex gap-6 flex-1">
-            <div className="w-1/3 space-y-4">
-              <div className="h-1.5 w-full shimmer rounded-full" />
-              <div className="h-1.5 w-4/5 shimmer rounded-full" />
+          <div className="flex gap-6 flex-1 pt-2">
+            {/* Sidebar Skeleton */}
+            <div className="w-[30%] space-y-5 border-r border-slate-100 pr-4">
+              <div className="space-y-2">
+                <div className="h-2 w-full shimmer rounded-full" />
+                <div className="h-1.5 w-4/5 shimmer rounded-full opacity-50" />
+              </div>
+              <div className="space-y-2">
+                <div className="h-2 w-3/4 shimmer rounded-full" />
+                <div className="h-1.5 w-full shimmer rounded-full opacity-50" />
+              </div>
             </div>
-            <div className="flex-1 space-y-5">
-              <div className="h-1.5 w-1/2 shimmer rounded-full" />
-              <div className="h-1.5 w-3/4 shimmer rounded-full" />
+            
+            {/* Main Content Skeleton */}
+            <div className="flex-1 space-y-6">
+              <div className="space-y-3">
+                <div className="h-2.5 w-1/3 shimmer rounded-full bg-indigo-100" />
+                <div className="space-y-2">
+                  <div className="h-1.5 w-full shimmer rounded-full" />
+                  <div className="h-1.5 w-5/6 shimmer rounded-full" />
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="h-2.5 w-1/4 shimmer rounded-full bg-indigo-100" />
+                <div className="space-y-2">
+                  <div className="h-1.5 w-full shimmer rounded-full" />
+                  <div className="h-1.5 w-full shimmer rounded-full" />
+                </div>
+              </div>
             </div>
           </div>
         </motion.div>
