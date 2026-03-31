@@ -26,12 +26,21 @@ export default function ATSTemplate({ data }: Props) {
 
   const sections: Record<SectionKey, React.ReactNode> = {
     personalInfo: (p.fullName || p.email) ? (
-      <div key="personalInfo" style={{ textAlign: "center", marginBottom: "16px", paddingBottom: "12px", borderBottom: "1.5px solid #000" }}>
-        {p.fullName && <h1 style={{ fontSize: "22px", fontWeight: 700, letterSpacing: "0.02em", margin: "0 0 4px" }}>{p.fullName.toUpperCase()}</h1>}
-        <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "4px 12px", fontSize: "11px", color: "#222" }}>
-          {p.email && <span>{p.email}</span>}{p.phone && <span>| {p.phone}</span>}
-          {p.location && <span>| {p.location}</span>}{p.linkedin && <span>| {p.linkedin}</span>}
-          {p.website && <span>| {p.website}</span>}
+      <div key="personalInfo" style={{ marginBottom: "16px", paddingBottom: "12px", borderBottom: "1.5px solid #000" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "24px" }}>
+          {p.photo && (
+            <div style={{ width: "60px", height: "60px", flexShrink: 0, border: "1px solid #000", padding: "2px" }}>
+              <img src={p.photo} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+          )}
+          <div style={{ textAlign: "center" }}>
+            {p.fullName && <h1 style={{ fontSize: "22px", fontWeight: 700, letterSpacing: "0.02em", margin: "0 0 4px" }}>{p.fullName.toUpperCase()}</h1>}
+            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "4px 12px", fontSize: "11px", color: "#222" }}>
+              {p.email && <span>{p.email}</span>}{p.phone && <span>| {p.phone}</span>}
+              {p.location && <span>| {p.location}</span>}{p.linkedin && <span>| {p.linkedin}</span>}
+              {p.website && <span>| {p.website}</span>}
+            </div>
+          </div>
         </div>
       </div>
     ) : null,
@@ -57,9 +66,9 @@ export default function ATSTemplate({ data }: Props) {
                 </div>
                 <span style={{ fontSize: "12px" }}>{dateRange(job.startDate, job.endDate, job.current)}</span>
               </div>
-              {job.bullets.filter(Boolean).length > 0 && (
+              {job.bullets.length > 0 && (
                 <ul style={{ margin: "5px 0 0", paddingLeft: "18px" }}>
-                  {job.bullets.filter(Boolean).map((b, i) => (
+                  {job.bullets.map((b, i) => (
                     <li key={i} style={{ fontSize: "12px", color: "#111", lineHeight: "1.6", marginBottom: "2px" }}>{b}</li>
                   ))}
                 </ul>

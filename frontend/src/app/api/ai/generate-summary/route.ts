@@ -28,7 +28,7 @@ Rules:
 4. Do not use first-person pronouns ("I", "my") - start sentences with action verbs or nouns.
 5. Return ONLY the summary paragraph. No quotes, no intro, no explanation.`;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

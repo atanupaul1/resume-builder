@@ -52,9 +52,9 @@ export default function ExecutiveTemplate({ data }: Props) {
                 <span style={{ fontSize: "12px", fontWeight: 600, color: accent }}>{job.company}</span>
                 <span style={{ fontSize: "11px", color: "#64748b" }}>{job.location}</span>
               </div>
-              {job.bullets.filter(Boolean).length > 0 && (
+              {job.bullets.length > 0 && (
                 <ul style={{ margin: 0, paddingLeft: "18px", listStyleType: "disc", display: "flex", flexDirection: "column", gap: "4px" }}>
-                  {job.bullets.filter(Boolean).map((bullet, i) => (
+                  {job.bullets.map((bullet, i) => (
                     <li key={i} style={{ fontSize: "11px", color: "#334155", lineHeight: "1.5" }}>{bullet}</li>
                   ))}
                 </ul>
@@ -107,6 +107,11 @@ export default function ExecutiveTemplate({ data }: Props) {
     <div style={{ padding: "40px", fontFamily: '"Times New Roman", Times, serif', minHeight: "1123px", backgroundColor: "#fff" }}>
       {/* Header */}
       <header style={{ textAlign: "center", marginBottom: "32px", borderBottom: `4px solid ${accent}`, paddingBottom: "24px" }}>
+        {p.photo && (
+          <div style={{ width: "90px", height: "90px", borderRadius: "50%", overflow: "hidden", border: `2px solid ${accent}`, margin: "0 auto 16px auto", padding: "3px", backgroundColor: "#fff" }}>
+            <img src={p.photo} alt="Profile" style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }} />
+          </div>
+        )}
         <h1 style={{ fontSize: "32px", fontWeight: 700, color: "#0f172a", margin: "0 0 8px 0", letterSpacing: "1px" }}>{p.fullName || "Your Name"}</h1>
         <p style={{ fontSize: "14px", fontWeight: 600, color: accent, textTransform: "uppercase", letterSpacing: "2px", margin: "0 0 16px 0" }}>{p.jobTitle}</p>
         

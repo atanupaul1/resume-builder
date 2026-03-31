@@ -71,7 +71,7 @@ export interface ResumeData {
   education: Education[];
   skillGroups: SkillGroup[];
   contact: ContactInfo;
-  template: "minimal" | "modern" | "ats" | "executive" | "academic" | "tech";
+  template: "minimal" | "modern" | "ats" | "executive" | "academic" | "tech" | "glassmorphism" | "portfolio" | "timeline" | "compact" | "newspaper" | "skill-based" | "contemporary" | "essential" | "polished" | "current" | "elegant" | "indigo" | "crisp" | "professional" | "avant-garde" | "creative" | "iconic";
   accentColor: string;
   sectionOrder: SectionKey[];
 }

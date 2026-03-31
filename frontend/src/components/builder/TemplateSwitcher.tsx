@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowDown01Icon, Tick01Icon } from "@hugeicons/core-free-icons";
 
-type TemplateId = "minimal" | "modern" | "ats" | "executive" | "academic" | "tech";
+type TemplateId = "minimal" | "modern" | "ats" | "executive" | "academic" | "tech" | "glassmorphism" | "portfolio" | "timeline" | "compact" | "newspaper" | "skill-based" | "contemporary" | "essential" | "polished" | "current" | "elegant" | "indigo" | "crisp" | "professional" | "avant-garde" | "creative" | "iconic";
 
 interface Template {
   id: TemplateId;
@@ -13,7 +13,7 @@ interface Template {
   preview: React.ReactNode;
 }
 
-const templates: Template[] = [
+export const templates: Template[] = [
   {
     id: "minimal",
     label: "Minimalist",
@@ -153,6 +153,337 @@ const templates: Template[] = [
         <rect x="24" y="52" width="30" height="20" fill="#0f172a" />
       </svg>
     )
+  },
+  {
+    id: "glassmorphism",
+    label: "Glassmorphism",
+    description: "Modern Frosted UI",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <defs>
+          <linearGradient id="glassGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#a855f7" />
+            <stop offset="100%" stopColor="#3b82f6" />
+          </linearGradient>
+        </defs>
+        <rect width="60" height="80" fill="url(#glassGrad)" />
+        <rect x="6" y="8" width="20" height="20" rx="4" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.3)" />
+        <rect x="30" y="8" width="24" height="25" rx="4" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.2)" />
+        <rect x="6" y="38" width="48" height="34" rx="4" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" />
+        <rect x="12" y="44" width="36" height="2" fill="white" opacity="0.5" />
+        <rect x="12" y="50" width="24" height="1" fill="white" opacity="0.3" />
+      </svg>
+    )
+  },
+  {
+    id: "portfolio",
+    label: "Creative Portfolio",
+    description: "Designer Focus",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="#fff" />
+        <rect width="60" height="24" fill="#f43f5e" />
+        <rect x="20" y="6" width="20" height="4" fill="#fbbf24" />
+        <rect x="10" y="32" width="40" height="20" rx="2" fill="#fff1f2" stroke="#f43f5e" strokeWidth="0.5" />
+        <rect x="10" y="58" width="40" height="12" rx="2" fill="#fef3c7" stroke="#fbbf24" strokeWidth="0.5" />
+      </svg>
+    )
+  },
+  {
+    id: "timeline",
+    label: "Timeline",
+    description: "Professional History",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="#fff" />
+        <line x1="12" y1="10" x2="12" y2="70" stroke="#e2e8f0" strokeWidth="1" />
+        {[20, 40, 60].map(y => (
+          <g key={y}>
+            <circle cx="12" cy={y} r="2" fill="#10b981" />
+            <rect x="18" y={y - 4} width="30" height="8" rx="1" fill="#f0fdf4" />
+            <rect x="4" y={y - 2} width="6" height="4" fill="#e2e8f0" />
+          </g>
+        ))}
+      </svg>
+    )
+  },
+  {
+    id: "compact",
+    label: "Compact One-Page",
+    description: "Space Optimized",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="#fff" />
+        <rect x="4" y="4" width="52" height="6" fill="#f8fafc" />
+        <rect x="4" y="14" width="24" height="62" fill="#fff" stroke="#f1f5f9" />
+        <rect x="32" y="14" width="24" height="62" fill="#fff" stroke="#f1f5f9" />
+        {[18, 22, 26, 30].map(y => <rect key={y} x="6" y={y} width="20" height="1" fill="#e2e8f0" />)}
+      </svg>
+    )
+  },
+  {
+    id: "newspaper",
+    label: "Newspaper",
+    description: "Editorial Style",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="#fdfbf7" />
+        <rect x="4" y="4" width="52" height="4" fill="#111" />
+        <line x1="4" y1="10" x2="56" y2="10" stroke="#111" strokeWidth="0.5" />
+        <line x1="30" y1="14" x2="30" y2="76" stroke="#111" strokeWidth="0.2" />
+        <rect x="4" y="14" width="22" height="20" fill="#111" opacity="0.05" />
+        <rect x="34" y="14" width="22" height="40" fill="#111" opacity="0.05" />
+      </svg>
+    )
+  },
+  {
+    id: "skill-based",
+    label: "Skill Dashboard",
+    description: "Skills-First Vibe",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="#fff" />
+        <rect x="4" y="4" width="52" height="20" rx="3" fill="#eef2ff" />
+        <rect x="8" y="8" width="12" height="12" rx="2" fill="#6366f1" opacity="0.2" />
+        <rect x="24" y="8" width="12" height="12" rx="2" fill="#06b6d4" opacity="0.2" />
+        <rect x="40" y="8" width="12" height="12" rx="2" fill="#6366f1" opacity="0.2" />
+        <rect x="4" y="28" width="52" height="48" rx="2" fill="#f8fafc" />
+      </svg>
+    )
+  },
+  {
+    id: "contemporary",
+    label: "Contemporary",
+    description: "Bold & Structured",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="white" />
+        <rect x="0" y="8" width="4" height="15" fill="#2563eb" />
+        <rect x="8" y="8" width="30" height="4" rx="1" fill="#111" />
+        <rect x="8" y="14" width="20" height="2" rx="1" fill="#2563eb" />
+        <rect x="8" y="20" width="40" height="1.5" rx="0.5" fill="#64748b" />
+
+        <rect x="8" y="32" width="45" height="1" fill="#2563eb" opacity="0.2" />
+        <rect x="8" y="38" width="15" height="2" fill="#2563eb" rx="0.5" />
+        <rect x="8" y="44" width="30" height="1.5" rx="0.5" fill="#111" />
+        <rect x="8" y="48" width="20" height="1" rx="0.5" fill="#64748b" />
+
+        <rect x="8" y="58" width="45" height="1" fill="#2563eb" opacity="0.2" />
+        <rect x="8" y="64" width="15" height="2" fill="#2563eb" rx="0.5" />
+        <rect x="8" y="70" width="30" height="1.5" rx="0.5" fill="#111" />
+      </svg>
+    )
+  },
+  {
+    id: "essential",
+    label: "Essential",
+    description: "Corporate & Clean",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="white" />
+        <rect x="15" y="8" width="30" height="4" rx="1" fill="#111" />
+        <rect x="10" y="14" width="40" height="1" rx="0.5" fill="#e5e7eb" />
+
+        <rect x="6" y="22" width="48" height="1.5" fill="#334155" />
+        <rect x="6" y="28" width="20" height="1.5" rx="0.5" fill="#111" />
+        <rect x="34" y="28" width="20" height="1" rx="0.5" fill="#64748b" />
+        <rect x="6" y="32" width="48" height="8" fill="#f8fafc" />
+
+        <rect x="6" y="46" width="48" height="1.5" fill="#334155" />
+        <rect x="6" y="52" width="30" height="1.5" rx="0.5" fill="#111" />
+        <rect x="6" y="56" width="20" height="1" rx="0.5" fill="#64748b" />
+        <rect x="6" y="60" width="48" height="12" fill="#f8fafc" />
+      </svg>
+    )
+  },
+  {
+    id: "polished",
+    label: "Polished",
+    description: "Executive Focus",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="white" />
+        <rect x="6" y="8" width="40" height="6" fill="#111" />
+        <rect x="6" y="16" width="30" height="2" fill="#1e293b" />
+        <rect x="6" y="22" width="48" height="0.5" fill="#f1f5f9" />
+
+        <rect x="4" y="28" width="12" height="2" rx="0.5" fill="#94a3b8" />
+        <rect x="20" y="28" width="30" height="2" fill="#111" />
+        <rect x="20" y="32" width="20" height="1.5" fill="#1e293b" />
+        <rect x="20" y="36" width="34" height="8" fill="#f8fafc" />
+
+        <rect x="4" y="48" width="12" height="2" rx="0.5" fill="#94a3b8" />
+        <rect x="20" y="48" width="30" height="2" fill="#111" />
+        <rect x="20" y="52" width="20" height="1.5" fill="#1e293b" />
+        <rect x="20" y="56" width="34" height="12" fill="#f8fafc" />
+      </svg>
+    )
+  },
+  {
+    id: "current",
+    label: "Current",
+    description: "High-Energy Tech",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="25" fill="#1e293b" />
+        <rect width="60" height="55" y="25" fill="white" />
+        <circle cx="30" cy="12" r="6" fill="rgba(255,255,255,0.2)" />
+        <rect x="15" y="20" width="30" height="2" fill="white" opacity="0.5" />
+
+        <rect x="6" y="32" width="20" height="3" rx="1.5" fill="#f1f5f9" stroke="#e2e8f0" strokeWidth="0.5" />
+        <rect x="30" y="32" width="24" height="3" rx="1.5" fill="#f1f5f9" stroke="#e2e8f0" strokeWidth="0.5" />
+
+        <rect x="6" y="42" width="48" height="2" fill="#1e293b" />
+        <rect x="6" y="48" width="48" height="10" fill="#f8fafc" />
+        <rect x="6" y="62" width="48" height="10" fill="#f8fafc" />
+      </svg>
+    )
+  },
+  {
+    id: "elegant",
+    label: "Elegant",
+    description: "Premium Modern",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="white" />
+        <rect x="10" y="8" width="40" height="4" rx="1" fill="#111" />
+        <rect x="10" y="22" width="40" height="1" fill="#e5e7eb" />
+
+        <rect x="6" y="28" width="20" height="2" fill="#1e293b" />
+        <rect x="6" y="32" width="48" height="10" fill="#f8fafc" />
+
+        <rect x="6" y="46" width="20" height="2" fill="#1e293b" />
+        <rect x="6" y="50" width="48" height="15" fill="#f8fafc" />
+      </svg>
+    )
+  },
+  {
+    id: "indigo",
+    label: "Indigo",
+    description: "Modern Sidebar",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="20" height="80" fill="#f8fafc" />
+        <rect width="40" height="80" x="20" fill="white" />
+        <rect x="4" y="6" width="12" height="12" rx="3" fill="#e2e8f0" />
+        <rect x="4" y="24" width="12" height="1.5" fill="#4f46e5" />
+        <rect x="4" y="28" width="12" height="10" fill="#e2e8f0" opacity="0.5" />
+
+        <rect x="24" y="8" width="30" height="4" fill="#0f172a" />
+        <rect x="24" y="14" width="20" height="2" fill="#4f46e5" />
+        <rect x="24" y="22" width="30" height="1" fill="#f1f5f9" />
+        <rect x="24" y="26" width="30" height="15" fill="#f8fafc" />
+      </svg>
+    )
+  },
+  {
+    id: "crisp",
+    label: "Crisp",
+    description: "Sharp Modern",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="white" />
+        <rect width="35" height="15" fill="#f8fafc" />
+        <rect x="6" y="4" width="20" height="4" fill="#0f172a" />
+        <rect x="6" y="10" width="12" height="1.5" fill="#64748b" />
+        <rect x="40" y="4" width="14" height="6" fill="#f1f5f9" />
+
+        <rect x="0" y="24" width="3" height="8" fill="#0f172a" />
+        <rect x="6" y="24" width="20" height="2" fill="#64748b" />
+        <rect x="6" y="30" width="48" height="12" fill="#f8fafc" />
+
+        <rect x="0" y="48" width="3" height="8" fill="#0f172a" />
+        <rect x="6" y="48" width="20" height="2" fill="#64748b" />
+        <rect x="6" y="54" width="48" height="18" fill="#f8fafc" />
+      </svg>
+    )
+  },
+  {
+    id: "professional",
+    label: "Professional",
+    description: "Corporate Authority",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="white" />
+        <rect x="10" y="8" width="40" height="3" fill="#0f172a" />
+        <rect x="15" y="14" width="30" height="1.5" fill="#1e3a8a" />
+        <rect x="10" y="24" width="40" height="0.5" fill="#1e3a8a" />
+
+        <rect x="6" y="28" width="48" height="2" fill="#1e3a8a" opacity="0.1" />
+        <rect x="6" y="32" width="20" height="2" fill="#1e3a8a" />
+        <rect x="6" y="36" width="48" height="12" fill="#f8fafc" />
+
+        <rect x="6" y="52" width="48" height="2" fill="#1e3a8a" opacity="0.1" />
+        <rect x="6" y="56" width="20" height="2" fill="#1e3a8a" />
+        <rect x="6" y="60" width="48" height="12" fill="#f8fafc" />
+      </svg>
+    )
+  },
+  {
+    id: "avant-garde",
+    label: "Avant-Garde",
+    description: "Creative Bold",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="white" />
+        <rect width="60" height="20" fill="#f1f5f9" />
+        <rect x="6" y="6" width="30" height="6" fill="#000" />
+        <rect x="6" y="14" width="20" height="2" fill="#111" opacity="0.5" />
+        <rect y="20" width="60" height="3" fill="#000" />
+
+        <rect x="0" y="28" width="4" height="6" fill="#000" />
+        <rect x="8" y="28" width="48" height="12" fill="#f8fafc" />
+
+        <rect x="0" y="44" width="4" height="6" fill="#000" />
+        <rect x="8" y="44" width="48" height="15" fill="#f8fafc" />
+
+        <rect x="8" y="64" width="10" height="4" stroke="#000" strokeWidth="1" fill="none" />
+        <rect x="22" y="64" width="10" height="4" stroke="#000" strokeWidth="1" fill="none" />
+        <rect x="36" y="64" width="10" height="4" stroke="#000" strokeWidth="1" fill="none" />
+      </svg>
+    )
+  },
+  {
+    id: "creative",
+    label: "Creative",
+    description: "Vibrant & Bold",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="white" />
+        <rect x="6" y="6" width="15" height="15" rx="4" fill="#ec4899" transform="rotate(-5, 13, 13)" />
+        <rect x="25" y="8" width="25" height="4" fill="#0f172a" />
+        <rect x="25" y="14" width="15" height="2" fill="#ec4899" />
+
+        <rect x="6" y="28" width="2" height="15" fill="#f1f5f9" />
+        <circle cx="6" cy="32" r="2" fill="#ec4899" />
+        <rect x="12" y="30" width="40" height="10" fill="#f8fafc" />
+
+        <rect x="6" y="48" width="20" height="4" rx="2" fill="#ec4899" />
+        <rect x="30" y="48" width="24" height="4" rx="2" fill="#ec4899" />
+      </svg>
+    )
+  },
+  {
+    id: "iconic",
+    label: "Iconic",
+    description: "Premium Branding",
+    preview: (
+      <svg viewBox="0 0 60 80" className="w-full h-full">
+        <rect width="60" height="80" fill="white" />
+        <rect width="60" height="20" rx="8" fill="#111827" />
+        <rect x="10" y="6" width="30" height="4" fill="white" />
+        <rect x="10" y="12" width="20" height="2" fill="white" opacity="0.6" />
+
+        <rect x="6" y="26" width="48" height="12" rx="4" fill="#f8fafc" stroke="#cbd5e1" strokeDasharray="2,2" />
+
+        <rect x="6" y="44" width="4" height="4" rx="1" fill="#111827" />
+        <rect x="14" y="44" width="30" height="2" fill="#0f172a" />
+        <rect x="14" y="48" width="40" height="10" fill="#f1f5f9" />
+
+        <rect x="6" y="64" width="20" height="6" rx="3" fill="#fff" stroke="#f1f5f9" strokeWidth="2" />
+        <rect x="30" y="64" width="20" height="6" rx="3" fill="#fff" stroke="#f1f5f9" strokeWidth="2" />
+      </svg>
+    )
   }
 ];
 
@@ -170,12 +501,17 @@ const PRESET_COLORS = [
 
 export default function TemplateSwitcher({ active, onChange, accentColor, onAccentChange }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const colorPickerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
+      }
+      if (colorPickerRef.current && !colorPickerRef.current.contains(event.target as Node)) {
+        setIsColorPickerOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -192,9 +528,8 @@ export default function TemplateSwitcher({ active, onChange, accentColor, onAcce
         <div className="relative">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`flex items-center gap-3 px-3 py-1.5 rounded-xl border text-sm transition-all min-w-[160px] ${
-              isOpen ? "border-indigo-400 ring-2 ring-indigo-50 shadow-sm" : "border-gray-200 hover:border-gray-300"
-            }`}
+            className={`flex items-center gap-3 px-3 py-1.5 rounded-xl border text-sm transition-all min-w-[160px] ${isOpen ? "border-indigo-400 ring-2 ring-indigo-50 shadow-sm" : "border-gray-200 hover:border-gray-300"
+              }`}
           >
             <div className="w-6 h-8 rounded-md overflow-hidden border border-gray-100 flex-shrink-0 shadow-sm">
               {activeTemplate.preview}
@@ -213,7 +548,7 @@ export default function TemplateSwitcher({ active, onChange, accentColor, onAcce
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
                 transition={{ duration: 0.15, ease: "easeOut" }}
-                className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl border border-gray-100 shadow-2xl p-2 z-[100]"
+                className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl border border-gray-100 shadow-2xl p-2 z-[100] max-h-[450px] overflow-y-auto"
               >
                 <div className="grid grid-cols-1 gap-1">
                   {templates.map((t) => (
@@ -223,9 +558,8 @@ export default function TemplateSwitcher({ active, onChange, accentColor, onAcce
                         onChange(t.id);
                         setIsOpen(false);
                       }}
-                      className={`flex items-center gap-3 p-2 rounded-xl transition-all text-left group ${
-                        active === t.id ? "bg-indigo-50" : "hover:bg-gray-50"
-                      }`}
+                      className={`flex items-center gap-3 p-2 rounded-xl transition-all text-left group ${active === t.id ? "bg-indigo-50" : "hover:bg-gray-50"
+                        }`}
                     >
                       <div className="w-10 h-13 rounded-lg overflow-hidden border border-gray-100 flex-shrink-0 shadow-sm bg-white">
                         {t.preview}
@@ -259,25 +593,84 @@ export default function TemplateSwitcher({ active, onChange, accentColor, onAcce
               key={color}
               onClick={() => onAccentChange(color)}
               title={color}
-              className="w-5 h-5 rounded-full border-2 transition-transform hover:scale-110 flex-shrink-0"
+              className="w-5 h-5 rounded-full border-2 transition-all hover:scale-110 flex-shrink-0"
               style={{
                 backgroundColor: color,
                 borderColor: accentColor === color ? color : "transparent",
-                outline: accentColor === color ? `2px solid ${color}` : "none",
-                outlineOffset: "1px",
+                boxShadow: accentColor === color ? `0 0 0 2px white, 0 0 0 4px ${color}` : "none",
               }}
             />
           ))}
-          {/* Custom color input */}
-          <label className="w-5 h-5 rounded-full overflow-hidden cursor-pointer border border-gray-200 flex-shrink-0 hover:bg-gray-50 transition-colors" title="Custom color">
-            <input
-              type="color"
-              value={accentColor}
-              onChange={(e) => onAccentChange(e.target.value)}
-              className="opacity-0 w-0 h-0"
-            />
-            <span className="w-full h-full flex items-center justify-center text-[10px] text-gray-400">+</span>
-          </label>
+
+          {/* Custom color input - Aesthetic Popover version */}
+          <div className="relative ml-1" ref={colorPickerRef}>
+            <button
+              onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}
+              className="w-6 h-6 rounded-full overflow-hidden border-2 border-gray-100 flex-shrink-0 hover:border-gray-300 transition-all flex items-center justify-center p-[2px]"
+              title="Enter HEX code"
+              style={{
+                boxShadow: !PRESET_COLORS.includes(accentColor) ? `0 0 0 2px white, 0 0 0 4px ${accentColor}` : "none",
+              }}
+            >
+              <div
+                className="w-full h-full rounded-full transition-colors flex items-center justify-center"
+                style={{ background: !PRESET_COLORS.includes(accentColor) ? accentColor : "conic-gradient(from 0deg, red, yellow, green, cyan, blue, magenta, red)" }}
+              >
+                {!PRESET_COLORS.includes(accentColor) && <div className="w-1.5 h-1.5 rounded-full bg-white shadow-sm" />}
+              </div>
+            </button>
+
+            <AnimatePresence>
+              {isColorPickerOpen && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: -10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                  className="absolute right-0 top-full mt-4 w-48 bg-white rounded-2xl border border-gray-100 shadow-2xl p-4 z-[110]"
+                >
+                  <div className="space-y-3">
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Custom HEX</p>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={accentColor.toUpperCase()}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          if (val.startsWith('#') && val.length <= 7) onAccentChange(val);
+                          else if (!val.startsWith('#') && val.length <= 6) onAccentChange(`#${val}`);
+                        }}
+                        className="w-full pl-8 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs font-mono font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 transition-all"
+                        placeholder="#000000"
+                      />
+                      <div
+                        className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 rounded shadow-sm border border-white"
+                        style={{ backgroundColor: accentColor }}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-50">
+                      <input
+                        type="color"
+                        value={accentColor}
+                        onChange={(e) => onAccentChange(e.target.value)}
+                        className="w-full h-8 rounded-lg cursor-pointer opacity-0 absolute pointer-events-none"
+                        id="native-color"
+                      />
+                      <label
+                        htmlFor="native-color"
+                        className="col-span-2 text-center py-2 bg-indigo-50 text-indigo-600 rounded-lg text-[10px] font-bold hover:bg-indigo-100 cursor-pointer transition-colors"
+                      >
+                        Open Visual Picker
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Popover Arrow - Flipped to top */}
+                  <div className="absolute bottom-full right-6 w-3 h-3 bg-white border-l border-t border-gray-100 rotate-45 translate-y-1.5" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </div>

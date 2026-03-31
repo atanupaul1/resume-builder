@@ -94,6 +94,17 @@ export const AcademicCard = ({ isSelected }: AcademicCardProps) => {
         </p>
       </div>
 
+      {/* Hover/Active Button */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
+        <div className={`px-6 py-2 text-xs font-bold rounded-xl transition-all duration-400 ease-[0.4,0,0.2,1] shadow-xl flex items-center gap-2 ${isSelected
+            ? 'bg-purple-600 text-white opacity-100 translate-y-16'
+            : 'bg-slate-900 text-white opacity-0 group-hover:opacity-100 transform translate-y-12 group-hover:translate-y-16'
+          }`}>
+          {isSelected && <HugeiconsIcon icon={Tick01Icon} size={14} />}
+          {isSelected ? 'Selected' : 'Use Template'}
+        </div>
+      </div>
+
       <style jsx>{`
         .shimmer {
           background: linear-gradient(

@@ -50,9 +50,9 @@ export default function AcademicTemplate({ data }: Props) {
               <div>
                 <h3 style={{ fontSize: "13px", fontWeight: 700, color: "#1e293b", margin: "0 0 4px 0" }}>{job.role}</h3>
                 <p style={{ fontSize: "12px", fontStyle: "italic", color: accent, margin: "0 0 8px 0" }}>{job.company} — {job.location}</p>
-                {job.bullets.filter(Boolean).length > 0 && (
+                {job.bullets.length > 0 && (
                   <ul style={{ margin: 0, paddingLeft: "14px", listStyleType: "circle", display: "flex", flexDirection: "column", gap: "6px" }}>
-                    {job.bullets.filter(Boolean).map((bullet, i) => (
+                    {job.bullets.map((bullet, i) => (
                       <li key={i} style={{ fontSize: "11px", color: "#475569", lineHeight: "1.5" }}>{bullet}</li>
                     ))}
                   </ul>
@@ -108,6 +108,11 @@ export default function AcademicTemplate({ data }: Props) {
     <div style={{ padding: "60px 50px", fontFamily: '"Georgia", serif', minHeight: "1123px", backgroundColor: "#fff", display: "flex", flexDirection: "column" }}>
       {/* Header */}
       <header style={{ marginBottom: "48px", textAlign: "center" }}>
+        {p.photo && (
+          <div style={{ width: "84px", height: "84px", overflow: "hidden", border: `1px solid #e2e8f0`, margin: "0 auto 16px auto", padding: "4px", backgroundColor: "#fff" }}>
+            <img src={p.photo} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          </div>
+        )}
         <h1 style={{ fontSize: "28px", fontWeight: 400, color: "#000", margin: "0 0 12px 0", letterSpacing: "0.1em", textTransform: "uppercase" }}>{p.fullName || "NAME"}</h1>
         <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "10px", fontSize: "10px", color: "#64748b", textTransform: "uppercase", letterSpacing: "1px" }}>
           {p.location && <span>{p.location}</span>}

@@ -1,0 +1,19 @@
+John Doe
+Software Engineer
+Email: john.doe@example.com
+Phone: (555) 123-4567
+
+Summary
+Passionate software engineer with 5 years of experience building scalable web applications.
+
+Experience
+Tech Corp - Senior Developer (Jan 2020 - Present)
+- Developed a high-performance REST API using FastAPI.
+- Improved database query performance by 40%.
+
+Education
+University of Science - B.S. in Computer Science (2015 - 2019)
+Graduated with Honors.
+
+Skills
+Python, React, SQL, AWS

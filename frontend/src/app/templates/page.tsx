@@ -15,6 +15,7 @@ import { ExecutiveCard } from '@/components/ui/ExecutiveCard';
 import { AcademicCard } from '@/components/ui/AcademicCard';
 import { TechCard } from '@/components/ui/TechCard';
 import { useRouter } from 'next/navigation';
+import { templates as templateRegistry } from '@/components/builder/TemplateSwitcher';
 
 const CATEGORIES = ['All', 'Creative', 'Academic', 'Corporate', 'Tech', 'Minimalist', 'ATS-Friendly'] as const;
 type Category = typeof CATEGORIES[number];
@@ -133,18 +134,48 @@ export default function TemplateGallery() {
                         <TechCard isSelected={isSelected} />
                       ) : (
                         <div
-                          className={`group relative bg-white border rounded-[32px] p-4 transition-all cursor-pointer hover:shadow-2xl hover:shadow-indigo-50 ${isSelected ? 'border-indigo-600 ring-4 ring-indigo-600/5 bg-indigo-50/10' : 'border-gray-100 hover:border-indigo-100'
+                          className={`group relative bg-white border rounded-[32px] p-6 transition-all cursor-pointer hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] ${isSelected ? 'border-indigo-600 ring-4 ring-indigo-600/5 bg-indigo-50/5' : 'border-gray-100 hover:border-indigo-100'
                             }`}
                         >
-                          <div className="relative aspect-[3/4] bg-gray-50 rounded-[24px] overflow-hidden mb-6 border-2 border-gray-50">
-                            <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center text-gray-300">
-                              <HugeiconsIcon icon={SparklesIcon} size={48} className="mb-4 opacity-50" />
-                              <span className="font-black uppercase tracking-tighter text-2xl">{template.name}</span>
+                          <div className="relative aspect-[3/4] bg-[#F9FAFB] rounded-[24px] overflow-hidden mb-6 border border-gray-100/50 flex items-center justify-center p-4">
+                            <motion.div 
+                              className="w-full h-full bg-white shadow-sm border border-gray-100 origin-top transition-transform duration-500 group-hover:scale-105"
+                            >
+                              {templateRegistry.find(t => t.id === template.id)?.preview}
+                            </motion.div>
+                            
+                            {/* Hover Overlay */}
+                            <div className="absolute inset-0 bg-indigo-600/0 group-hover:bg-indigo-600/5 transition-colors duration-300" />
+                            
+                            {/* Selected Indicator Badge */}
+                            {isSelected && (
+                              <div className="absolute top-4 right-4 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white z-10">
+                                <HugeiconsIcon icon={Tick01Icon} size={16} className="text-white" />
+                              </div>
+                            )}
+                          </div>
+                          
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h3 className="text-lg font-bold text-gray-900 tracking-tight">{template.name}</h3>
+                              <p className="text-xs text-gray-400 font-medium mt-1">
+                                {templateRegistry.find(t => t.id === template.id)?.description || 'Professional Design'}
+                              </p>
+                            </div>
+                            
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${isSelected ? 'bg-green-100 text-green-600' : 'bg-indigo-50 text-indigo-600 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0'}`}>
+                              <HugeiconsIcon icon={isSelected ? Tick01Icon : SparklesIcon} size={18} />
                             </div>
                           </div>
-                          <div className="px-2">
-                             <h3 className="text-lg font-semibold text-slate-900 tracking-tight font-sans">{template.name}</h3>
-                          </div>
+                          
+                          {/* Use Template Button Overlay */}
+                          {!isSelected && (
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                              <span className="px-6 py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl shadow-2xl tracking-wide backdrop-blur-sm whitespace-nowrap">
+                                USE TEMPLATE
+                              </span>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>

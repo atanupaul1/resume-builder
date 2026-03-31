@@ -7,7 +7,7 @@ function formatDate(d: string) {
   if (!d) return "";
   const [year, month] = d.split("-");
   if (!year || !month) return d;
-  return `${["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][parseInt(month)-1]} ${year}`;
+  return `${["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][parseInt(month) - 1]} ${year}`;
 }
 function dateRange(s: string, e: string, current: boolean) {
   const sf = formatDate(s); const ef = current ? "Present" : formatDate(e);
@@ -66,7 +66,7 @@ export default function ModernTemplate({ data }: Props) {
               {group.category && <p style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "#374151", margin: "0 0 5px" }}>{group.category}</p>}
               <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
                 {group.skills.map((skill) => (
-                  <span key={skill} style={{ fontSize: "10px", padding: "2px 8px", backgroundColor: accentLight, color: accent, borderRadius: "20px", fontWeight: 500, border: `1px solid ${accent}30` }}>{skill}</span>
+                  <span key={skill} style={{ display: "inline-block", fontSize: "10px", padding: "0 10px", height: "18px", lineHeight: "19px", backgroundColor: accentLight, color: accent, borderRadius: "20px", fontWeight: 500, border: `1px solid ${accent}30`, textAlign: "center", verticalAlign: "top" }}>{skill}</span>
                 ))}
               </div>
             </div>
@@ -113,7 +113,7 @@ export default function ModernTemplate({ data }: Props) {
                   <p style={{ fontWeight: 700, fontSize: "13px", color: "#111827", margin: 0 }}>{job.role}</p>
                   <p style={{ fontSize: "12px", color: accent, fontWeight: 500, margin: "2px 0 0" }}>{job.company}{job.location ? ` · ${job.location}` : ""}</p>
                 </div>
-                <span style={{ fontSize: "10px", padding: "3px 10px", backgroundColor: accentLight, color: accent, borderRadius: "20px", whiteSpace: "nowrap", fontWeight: 500, marginTop: "2px" }}>
+                <span style={{ display: "inline-block", fontSize: "10px", padding: "0 10px", height: "18px", lineHeight: "19px", backgroundColor: accentLight, color: accent, borderRadius: "20px", whiteSpace: "nowrap", fontWeight: 500, marginTop: "2px", textAlign: "center", verticalAlign: "top" }}>
                   {dateRange(job.startDate, job.endDate, job.current)}
                 </span>
               </div>
@@ -139,8 +139,17 @@ export default function ModernTemplate({ data }: Props) {
     <div className="bg-white w-full min-h-full" style={{ fontFamily: "'Inter','Helvetica Neue',sans-serif", fontSize: "13px", color: "#1a1a1a" }}>
       {/* Header band */}
       <div style={{ backgroundColor: accent, padding: "32px 40px 28px", color: "white" }}>
-        {p.fullName && <h1 style={{ fontSize: "28px", fontWeight: 800, letterSpacing: "-0.03em", margin: 0 }}>{p.fullName}</h1>}
-        {p.jobTitle && <p style={{ fontSize: "13px", opacity: 0.85, margin: "6px 0 0", fontWeight: 400, letterSpacing: "0.04em" }}>{p.jobTitle}</p>}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            {p.fullName && <h1 style={{ fontSize: "28px", fontWeight: 800, letterSpacing: "-0.03em", margin: 0 }}>{p.fullName}</h1>}
+            {p.jobTitle && <p style={{ fontSize: "13px", opacity: 0.85, margin: "6px 0 0", fontWeight: 400, letterSpacing: "0.04em" }}>{p.jobTitle}</p>}
+          </div>
+          {p.photo && (
+            <div style={{ width: "70px", height: "70px", borderRadius: "12px", overflow: "hidden", border: "2px solid rgba(255,255,255,0.3)", flexShrink: 0 }}>
+              <img src={p.photo} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+          )}
+        </div>
       </div>
       {/* Body */}
       <div style={{ display: "flex", minHeight: "900px" }}>

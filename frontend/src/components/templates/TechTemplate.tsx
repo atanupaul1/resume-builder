@@ -52,9 +52,9 @@ export default function TechTemplate({ data }: Props) {
               <div style={{ fontSize: "12px", color: "#64748b", fontWeight: 500, marginBottom: "10px" }}>
                 {job.company} <span style={{ color: "#334155" }}>•</span> {job.location}
               </div>
-              {job.bullets.filter(Boolean).length > 0 && (
+              {job.bullets.length > 0 && (
                 <ul style={{ margin: 0, paddingLeft: "0", listStyle: "none", display: "flex", flexDirection: "column", gap: "6px" }}>
-                  {job.bullets.filter(Boolean).map((bullet, i) => (
+                  {job.bullets.map((bullet, i) => (
                     <li key={i} style={{ fontSize: "11.5px", color: "#94a3b8", lineHeight: "1.6", display: "flex", gap: "8px" }}>
                       <span style={{ color: accent, fontWeight: 900 }}>{">"}</span>
                       {bullet}
@@ -95,6 +95,11 @@ export default function TechTemplate({ data }: Props) {
       {/* Sidebar - Dark Mode */}
       <div style={{ width: "260px", backgroundColor: bg, color: "#fff", padding: "40px 30px", display: "flex", flexDirection: "column", gap: "40px" }}>
         <div>
+          {p.photo && (
+            <div style={{ width: "80px", height: "80px", borderRadius: "50%", overflow: "hidden", border: `3px solid ${accent}`, marginBottom: "20px" }}>
+              <img src={p.photo} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+          )}
           <h1 style={{ fontSize: "28px", fontWeight: 800, margin: "0 0 4px 0", color: "#f8fafc" }}>{p.fullName || "NAME"}</h1>
           <p style={{ fontSize: "12px", fontWeight: 600, color: accent, textTransform: "uppercase", letterSpacing: "1.5px" }}>{p.jobTitle || "DEVELOPER"}</p>
         </div>
@@ -132,7 +137,7 @@ export default function TechTemplate({ data }: Props) {
       </div>
 
       {/* Main Column - Light Mode */}
-      <div style={{ flex: 1, backgroundColor: "#020617", padding: "50px 48px", overflow: "hidden" }}>
+      <div style={{ flex: 1, backgroundColor: "#020617", padding: "50px 48px", overflow: "hidden", display: "flex", flexDirection: "column" }}>
         {sectionOrder.map((key) => sections[key])}
       </div>
     </div>

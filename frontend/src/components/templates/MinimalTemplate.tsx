@@ -28,8 +28,17 @@ export default function MinimalTemplate({ data }: Props) {
   const sections: Record<SectionKey, React.ReactNode> = {
     personalInfo: (p.fullName || p.jobTitle) ? (
       <div key="personalInfo" style={{ borderBottom: `2px solid ${accent}`, paddingBottom: "14px", marginBottom: "22px" }}>
-        {p.fullName && <h1 style={{ fontSize: "26px", fontWeight: 700, letterSpacing: "-0.02em", margin: 0, color: "#0f0f0f" }}>{p.fullName}</h1>}
-        {p.jobTitle && <p style={{ fontSize: "11px", fontFamily: "sans-serif", textTransform: "uppercase", letterSpacing: "0.1em", color: "#6b7280", margin: "6px 0 0" }}>{p.jobTitle}</p>}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+          <div>
+            {p.fullName && <h1 style={{ fontSize: "26px", fontWeight: 700, letterSpacing: "-0.02em", margin: 0, color: "#0f0f0f" }}>{p.fullName}</h1>}
+            {p.jobTitle && <p style={{ fontSize: "11px", fontFamily: "sans-serif", textTransform: "uppercase", letterSpacing: "0.1em", color: "#6b7280", margin: "6px 0 0" }}>{p.jobTitle}</p>}
+          </div>
+          {p.photo && (
+            <div style={{ width: "64px", height: "64px", borderRadius: "50%", overflow: "hidden", border: `1px solid #e5e7eb`, flexShrink: 0 }}>
+              <img src={p.photo} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+          )}
+        </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 16px", marginTop: "10px", fontFamily: "sans-serif", fontSize: "11px", color: "#6b7280" }}>
           {p.email && <span>✉ {p.email}</span>}{p.phone && <span>✆ {p.phone}</span>}
           {p.location && <span>⌖ {p.location}</span>}{p.linkedin && <span>in {p.linkedin}</span>}
@@ -58,9 +67,9 @@ export default function MinimalTemplate({ data }: Props) {
                 </div>
                 <p style={{ fontFamily: "sans-serif", fontSize: "11px", color: "#9ca3af", whiteSpace: "nowrap", marginTop: "2px" }}>{dateRange(job.startDate, job.endDate, job.current)}</p>
               </div>
-              {job.bullets.filter(Boolean).length > 0 && (
+              {job.bullets.length > 0 && (
                 <ul style={{ margin: "6px 0 0", padding: 0, listStyle: "none" }}>
-                  {job.bullets.filter(Boolean).map((b, i) => (
+                  {job.bullets.map((b, i) => (
                     <li key={i} style={{ display: "flex", gap: "8px", fontFamily: "sans-serif", fontSize: "12px", color: "#374151", lineHeight: "1.6", marginBottom: "3px" }}>
                       <span style={{ color: "#9ca3af", flexShrink: 0, marginTop: "2px" }}>•</span><span>{b}</span>
                     </li>

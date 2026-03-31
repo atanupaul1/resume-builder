@@ -36,6 +36,41 @@ export default function SkillsForm({ data, resumeData, onChange }: Props) {
     setInputValues((prev) => ({ ...prev, [groupId]: "" }));
   };
 
+  const [draggingSkillIndex, setDraggingSkillIndex] = useState<{ groupId: string; index: number } | null>(null);
+  const [dragOverSkillIndex, setDragOverSkillIndex] = useState<{ groupId: string; index: number } | null>(null);
+
+  const handleSkillDragStart = (groupId: string, index: number) => {
+    setDraggingSkillIndex({ groupId, index });
+  };
+
+  const handleSkillDragOver = (e: React.DragEvent, groupId: string, index: number) => {
+    e.preventDefault();
+    if (draggingSkillIndex && draggingSkillIndex.groupId === groupId) {
+      setDragOverSkillIndex({ groupId, index });
+    }
+  };
+
+  const handleSkillDrop = (groupId: string, dropIndex: number) => {
+    if (!draggingSkillIndex || draggingSkillIndex.groupId !== groupId) return;
+    const fromIndex = draggingSkillIndex.index;
+    if (fromIndex === dropIndex) {
+      setDraggingSkillIndex(null);
+      setDragOverSkillIndex(null);
+      return;
+    }
+
+    const group = data.find((g) => g.id === groupId);
+    if (!group) return;
+
+    const newSkills = [...group.skills];
+    const [moved] = newSkills.splice(fromIndex, 1);
+    newSkills.splice(dropIndex, 0, moved);
+
+    updateGroup(groupId, "skills", newSkills);
+    setDraggingSkillIndex(null);
+    setDragOverSkillIndex(null);
+  };
+
   const removeSkill = (groupId: string, skill: string) => {
     const group = data.find((g) => g.id === groupId)!;
     updateGroup(groupId, "skills", group.skills.filter((s) => s !== skill));
@@ -208,15 +243,34 @@ export default function SkillsForm({ data, resumeData, onChange }: Props) {
           </div>
 
           <div className="flex flex-wrap gap-2 min-h-[32px]">
-            {group.skills.map((skill) => (
-              <span
-                key={skill}
-                className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-50 text-indigo-700 text-xs rounded-full border border-indigo-200"
-              >
-                {skill}
-                <button onClick={() => removeSkill(group.id, skill)} className="text-indigo-400 hover:text-indigo-700 ml-1">×</button>
-              </span>
-            ))}
+            {group.skills.map((skill, index) => {
+              const isDragging = draggingSkillIndex?.groupId === group.id && draggingSkillIndex.index === index;
+              const isOver = dragOverSkillIndex?.groupId === group.id && dragOverSkillIndex.index === index;
+
+              return (
+                <div
+                  key={skill}
+                  draggable
+                  onDragStart={() => handleSkillDragStart(group.id, index)}
+                  onDragOver={(e) => handleSkillDragOver(e, group.id, index)}
+                  onDrop={() => handleSkillDrop(group.id, index)}
+                  onDragEnd={() => { setDraggingSkillIndex(null); setDragOverSkillIndex(null); }}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-2xl border border-indigo-100 shadow-sm cursor-move transition-all
+                    ${isDragging ? "opacity-30 scale-95" : "opacity-100 scale-100"}
+                    ${isOver ? "border-indigo-400 bg-indigo-100 -translate-y-1" : ""}
+                  `}
+                >
+                  {skill}
+                  <button 
+                    onClick={() => removeSkill(group.id, skill)} 
+                    onMouseDown={(e) => e.stopPropagation()} // Prevent drag start when clicking remove
+                    className="w-3.5 h-3.5 flex items-center justify-center rounded-full hover:bg-indigo-300 transition-colors text-indigo-300 hover:text-indigo-600 ml-1 text-sm leading-none"
+                  >
+                    ×
+                  </button>
+                </div>
+              );
+            })}
           </div>
 
           <div className="flex gap-2">

@@ -10,7 +10,8 @@ import {
   SparklesIcon, 
   Download02Icon, 
   ArrowRight01Icon,
-  CheckmarkCircle02Icon
+  CheckmarkCircle02Icon,
+  DashboardSquare01Icon
 } from '@hugeicons/core-free-icons';
 import { Sticker } from '@/components/ui/Sticker';
 import { FeaturesSection } from '@/components/landing/FeaturesSection';
@@ -35,10 +36,10 @@ export default function LandingPage() {
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-indigo-600 rounded-lg">
-              <HugeiconsIcon icon={SparklesIcon} size={20} color="white" />
+            <div className="p-1.5 bg-indigo-600 rounded-lg shadow-lg shadow-indigo-100 transition-transform hover:scale-105">
+              <HugeiconsIcon icon={DashboardSquare01Icon} size={20} color="white" />
             </div>
-            <span className="font-black text-xl tracking-tighter text-gray-900">RESUME.AI</span>
+            <span className="font-black text-xl tracking-tighter text-gray-900">CV.io</span>
           </div>
           <Link 
             href="/builder"
@@ -58,7 +59,7 @@ export default function LandingPage() {
             className="flex-1 text-center lg:text-left"
           >
             <span className="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-600 text-xs font-black uppercase tracking-widest rounded-full mb-6">
-              Next-Gen Career Tool
+              Career Tool
             </span>
             <h1 className="text-6xl lg:text-8xl font-black text-gray-900 leading-[0.9] tracking-tighter mb-8 italic">
               Build your resume, <br />
@@ -132,9 +133,12 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="py-12 border-t border-gray-100 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <HugeiconsIcon icon={SparklesIcon} size={20} className="text-indigo-600" />
-            <span className="font-bold text-gray-900 tracking-tighter">Made By ❤️Atanu, Swetasri</span>
+          <div className="flex flex-col items-center gap-2">
+            <div className="flex items-center gap-2">
+              <HugeiconsIcon icon={DashboardSquare01Icon} size={20} className="text-indigo-600" />
+              <span className="font-bold text-gray-900 tracking-tighter">CV.io</span>
+            </div>
+            <span className="text-xs font-bold text-gray-600 mt-2">Made By ❤️ Atanu, Swetasri</span>
           </div>
           <p className="text-sm text-gray-400 font-medium italic">Handcrafted with care for ambitious builders.</p>
         </div>
