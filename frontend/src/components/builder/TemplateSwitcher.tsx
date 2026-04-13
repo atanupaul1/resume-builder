@@ -170,13 +170,30 @@ export default function TemplateSwitcher({ active, onChange, accentColor, onAcce
           <AnimatePresence>
             {isOpen && (
               <motion.div
-                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                initial={{ opacity: 0, y: 15, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                transition={{ duration: 0.15, ease: "easeOut" }}
-                className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl border border-gray-100 shadow-2xl p-2 z-[100] max-h-[450px] overflow-y-auto"
+                exit={{ opacity: 0, y: 15, scale: 0.98 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="absolute top-full left-0 mt-4 w-[360px] bg-white rounded-[32px] border border-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-8 z-[100] overflow-hidden"
               >
-                <div className="grid grid-cols-1 gap-1">
+                {/* Header Section from Image */}
+                <div className="mb-8">
+                  <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6">
+                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="#6C63FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M7 8H17" stroke="#6C63FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M7 12H17" stroke="#6C63FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M7 16H13" stroke="#6C63FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                     </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-[#0f172a] mb-2">Template switching</h3>
+                  <p className="text-sm text-gray-400 font-medium leading-relaxed">
+                    Swap styles while keeping same resume data and structure.
+                  </p>
+                </div>
+
+                {/* Template List Container */}
+                <div className="space-y-4 p-1 bg-gray-50/50 rounded-[28px] border border-gray-100">
                   {templates.map((t) => (
                     <button
                       key={t.id}
@@ -184,18 +201,26 @@ export default function TemplateSwitcher({ active, onChange, accentColor, onAcce
                         onChange(t.id);
                         setIsOpen(false);
                       }}
-                      className={`flex items-center gap-3 p-2 rounded-xl transition-all text-left group ${active === t.id ? "bg-indigo-50" : "hover:bg-gray-50"}`}
+                      className={`w-full group relative flex items-center justify-between px-5 py-4 rounded-[22px] transition-all ${
+                        active === t.id 
+                          ? "bg-white shadow-xl shadow-indigo-100/30 border border-indigo-100" 
+                          : "hover:bg-white/60 hover:border-gray-200 border border-transparent"
+                      }`}
                     >
-                      <div className="w-10 h-13 rounded-lg overflow-hidden border border-gray-100 flex-shrink-0 shadow-sm bg-white">
-                        {t.preview}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-1.5">
-                          <p className={`text-xs font-bold ${active === t.id ? "text-indigo-600" : "text-gray-900"}`}>{t.label}</p>
-                          {active === t.id && <HugeiconsIcon icon={Tick01Icon} size={12} className="text-indigo-600" />}
+                      <div className="flex items-center gap-4">
+                        <div className={`w-10 h-10 rounded-xl overflow-hidden shadow-sm flex-shrink-0 bg-white border ${active === t.id ? "border-indigo-100" : "border-gray-100"}`}>
+                          {t.preview}
                         </div>
-                        <p className="text-[10px] text-gray-500 leading-tight mt-0.5 font-medium">{t.description}</p>
+                        <span className={`text-[13px] font-bold ${active === t.id ? "text-indigo-600" : "text-gray-600 group-hover:text-gray-900"}`}>
+                          {t.label}
+                        </span>
                       </div>
+                      
+                      {active === t.id && (
+                        <span className="text-[10px] font-black text-indigo-600 tracking-widest bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+                          ACTIVE
+                        </span>
+                      )}
                     </button>
                   ))}
                 </div>
