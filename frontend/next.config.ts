@@ -7,10 +7,9 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  // If your repository is not at a custom domain (e.g., username.github.io/resume-builder)
-  // uncomment the next line and replace 'resume-builder' with your repo name
+  // GitHub Pages needs the repository name as a base path
   basePath: isProd ? '/resume-builder' : '',
-  assetPrefix: isProd ? '/resume-builder/' : '',
+  trailingSlash: true,
 };
 
 export default nextConfig;
