@@ -1,0 +1,75 @@
+version: "2"
+type: frontend
+tech_stack:
+  - TypeScript
+  - React 19
+  - Next.js 16
+  - Tailwind CSS 4
+  - Framer Motion
+  - Hugeicons icons
+  - Zustand (for state management)
+routes:
+  - path: /
+    file: src/app/page.tsx
+    auth_required: false
+    description: Hero landing page with features overview and CTAs
+  - path: /builder
+    file: src/app/builder/page.tsx
+    auth_required: false
+    description: Full-featured resume editor with live preview, export, and import
+  - path: /templates
+    file: src/app/templates/page.tsx
+    auth_required: false
+    description: Gallery of resume templates to choose from
+features:
+  - name: Resume Editor
+    description: Interactive resume builder with section reordering and content editing
+    files:
+      - src/app/builder/page.tsx
+      - src/components/builder/SectionPanel.tsx
+      - src/components/builder/FormPanel.tsx
+      - src/components/builder/ResumeCanvas.tsx
+    entry_route: /builder
+    user_interactions:
+      - Edit resume title at header
+      - Select resume template from TemplateSwitcher
+      - Change accent color from TemplateSwitcher
+      - Click on a section in SectionPanel to open FormPanel
+      - Reorder sections using drag and drop in SectionPanel
+      - Fill information in FormPanel for personal, summary, experience, education, skills, and contact sections
+      - Live preview updates in ResumeCanvas
+    api_calls:
+      - method: POST
+        endpoint: /api/resume/upload
+      - method: POST
+        endpoint: /api/export/pdf
+    auth_required: false
+  - name: Resume Import
+    description: Upload and parse existing resumes to populate builder fields
+    files:
+      - src/app/builder/page.tsx
+    entry_route: /builder
+    user_interactions:
+      - Click Import CV button in header
+      - Select a .pdf, .docx, or .txt file
+      - Wait for AI parsing and see fields populated
+    api_calls:
+      - method: POST
+        endpoint: http://localhost:8000/api/resume/upload
+    auth_required: false
+  - name: Resume Export
+    description: Download resume as PDF or Word document
+    files:
+      - src/app/builder/page.tsx
+    entry_route: /builder
+    user_interactions:
+      - Click PDF export button
+      - Click Word export button
+    api_calls:
+      - method: POST
+        endpoint: http://localhost:8000/api/export/pdf
+    auth_required: false
+known_limitations:
+  - issue: Backend URLs are hardcoded to localhost:8000
+    location: src/app/builder/page.tsx
+    impact: API calls will fail if backend is not running locally on port 8000

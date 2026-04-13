@@ -1,0 +1,487 @@
+[
+  {
+    "id": "TC001",
+    "title": "Builder loads primary editor and preview",
+    "description": "Verifies the resume builder page loads with the main editor and a live preview area available.",
+    "category": "Interactive Resume Builder",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the resume editor interface is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a live resume preview area is displayed"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "End-to-end editing updates live preview",
+    "description": "Verifies core resume edits (title, template, accent color, sections, entries) reflect in the live preview.",
+    "category": "Interactive Resume Builder",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "action",
+        "description": "Fill a new value into the resume title field"
+      },
+      {
+        "type": "action",
+        "description": "Select a resume template"
+      },
+      {
+        "type": "action",
+        "description": "Select a different accent color option"
+      },
+      {
+        "type": "action",
+        "description": "Reorder resume sections using the section reorder controls"
+      },
+      {
+        "type": "action",
+        "description": "Fill in personal information fields with valid values"
+      },
+      {
+        "type": "action",
+        "description": "Add an experience entry"
+      },
+      {
+        "type": "action",
+        "description": "Fill the experience entry fields with valid values"
+      },
+      {
+        "type": "action",
+        "description": "Add an education entry"
+      },
+      {
+        "type": "action",
+        "description": "Fill the education entry fields with valid values"
+      },
+      {
+        "type": "action",
+        "description": "Add skills and contact information with valid values"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the live preview updates to reflect the latest edits"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Validation errors shown for incomplete or invalid required fields and clear after correction",
+    "description": "Verifies invalid or incomplete required inputs trigger validation errors and errors clear after fixing inputs.",
+    "category": "Interactive Resume Builder",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "action",
+        "description": "Fill required fields incompletely or with invalid values"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to save or finalize the resume"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify validation errors are visible and prevent saving or finalizing"
+      },
+      {
+        "type": "action",
+        "description": "Correct the inputs with valid values"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to save or finalize the resume again"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify validation errors are no longer visible"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Add and remove an experience entry",
+    "description": "Verifies the user can create and delete an experience entry and the editor updates accordingly.",
+    "category": "Interactive Resume Builder",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "action",
+        "description": "Add an experience entry"
+      },
+      {
+        "type": "action",
+        "description": "Fill the experience entry fields with valid values"
+      },
+      {
+        "type": "action",
+        "description": "Remove the experience entry"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the removed experience entry is no longer displayed in the editor"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the live preview no longer shows the removed experience entry"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Reordering sections changes order in preview",
+    "description": "Verifies section reorder controls update the section order shown in the live preview.",
+    "category": "Interactive Resume Builder",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "action",
+        "description": "Fill a unique value into a field inside one section to help identify it in preview"
+      },
+      {
+        "type": "action",
+        "description": "Reorder resume sections using the section reorder controls"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the live preview shows sections in the updated order"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Template gallery loads and shows thumbnails",
+    "description": "Verifies the template library page loads and displays a browsable set of template thumbnails.",
+    "category": "Template Library",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /templates"
+      },
+      {
+        "type": "action",
+        "description": "Scroll through the template gallery"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify template thumbnails are displayed"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Select template from library and apply in builder",
+    "description": "Verifies selecting a template in the library navigates to the builder and applies that template.",
+    "category": "Template Library",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /templates"
+      },
+      {
+        "type": "action",
+        "description": "Select a template to use"
+      },
+      {
+        "type": "action",
+        "description": "Click the option to use the selected template in the builder"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user lands on the resume builder"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the selected template is applied in the resume preview"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Attempt template preview shows fallback on failure (if preview feature exists)",
+    "description": "Verifies that if a template preview fails to load, the UI shows an error state or fallback thumbnail.",
+    "category": "Template Library",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /templates"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to preview a template"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify either a template preview is displayed or a fallback/error state is shown for the preview"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Import CV control is accessible from builder header",
+    "description": "Verifies the builder provides an import entry point to start the resume import flow.",
+    "category": "Resume Import",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "action",
+        "description": "Click the import resume control in the builder header"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an import interface is displayed that allows selecting a resume file"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Unsupported file type shows validation error",
+    "description": "Verifies selecting an unsupported file type for import shows a file type validation error and guidance.",
+    "category": "Resume Import",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "action",
+        "description": "Click the import resume control in the builder header"
+      },
+      {
+        "type": "action",
+        "description": "Select an unsupported file type for import"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a file type validation error is visible with supported format guidance"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Export page loads and export controls are available",
+    "description": "Verifies the builder loads and the export options can be accessed from the UI.",
+    "category": "Resume Export",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the resume editor and live preview are displayed"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the area containing export actions"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify export controls for generating documents are displayed"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Attempt PDF export and handle outcome without relying on download",
+    "description": "Verifies initiating PDF export triggers an observable UI response without requiring file download verification.",
+    "category": "Resume Export",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "action",
+        "description": "Click PDF export button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an export-in-progress indicator or disabled export state is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the UI returns to an idle state for exporting (export can be triggered again)"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Attempt Word export and handle outcome without relying on download",
+    "description": "Verifies initiating Word export triggers an observable UI response without requiring file download verification.",
+    "category": "Resume Export",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "action",
+        "description": "Click Word export button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an export-in-progress indicator or disabled export state is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the UI returns to an idle state for exporting (export can be triggered again)"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "PDF export failure shows an error state and no success confirmation",
+    "description": "Verifies the UI surfaces an error message when PDF export cannot be completed.",
+    "category": "Resume Export",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "action",
+        "description": "Click PDF export button"
+      },
+      {
+        "type": "action",
+        "description": "Wait for export to complete or fail"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an export error message is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no success confirmation for export is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Word export failure shows an error state and no success confirmation",
+    "description": "Verifies the UI surfaces an error message when Word export cannot be completed.",
+    "category": "Resume Export",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "action",
+        "description": "Click Word export button"
+      },
+      {
+        "type": "action",
+        "description": "Wait for export to complete or fail"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an export error message is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify no success confirmation for export is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Prevent duplicate PDF export submissions while export is in progress",
+    "description": "Verifies the UI prevents repeated export requests by disabling or ignoring additional clicks during an in-progress export.",
+    "category": "Resume Export",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "action",
+        "description": "Click PDF export button"
+      },
+      {
+        "type": "action",
+        "description": "Click PDF export button again immediately"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify only one export-in-progress indicator is shown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify export controls are disabled or otherwise prevent repeated submission during processing"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Error state is recoverable by retrying PDF export",
+    "description": "Verifies the user can retry exporting after an error and the UI transitions back into an export attempt state.",
+    "category": "Resume Export",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /builder"
+      },
+      {
+        "type": "action",
+        "description": "Click PDF export button"
+      },
+      {
+        "type": "action",
+        "description": "Wait for export to complete or fail"
+      },
+      {
+        "type": "action",
+        "description": "Click PDF export button again"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the export error message is cleared or replaced"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an export-in-progress indicator or disabled export state is visible"
+      }
+    ]
+  }
+]

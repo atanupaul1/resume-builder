@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { EyeIcon, Tick01Icon } from '@hugeicons/core-free-icons';
+import { Tick01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 
 interface MinimalistCardProps {

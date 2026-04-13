@@ -1,0 +1,18 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000",
+  "executionArgs": {
+    "projectName": "frontend",
+    "projectPath": "d:\\Projects\\IIT-Resume_template\\resume-builder\\frontend",
+    "testIds": [],
+    "additionalInstruction": "Please focus on testing the core resume creation flow and the import/export features. Ensure the live preview updates as expected.",
+    "serverMode": "development",
+    "envs": {
+      "API_KEY": "sk-user-EcamIfSnn_ngJkHCsXZjO76OnM5pkZBw2qHGf1IREyuKzGg8yJlYqDp-0_hDjUDrRnxKtZs71epunBP7Es5tyCwdfEuNKaVLjl3moz9DsxuEaZAqlYIw2VaOVoN0AOFKqls"
+    }
+  },
+  "serverPort": 56062,
+  "proxy": "http://4561246b-5423-4918-ae69-b4b5c56e0040:5CrFdStzYRRsUWaWabtqWgAd88rAZZ0z@tun.testsprite.com:8080"
+}
