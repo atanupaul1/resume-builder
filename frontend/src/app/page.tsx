@@ -6,30 +6,13 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { 
-  DragDropVerticalIcon, 
-  SparklesIcon, 
-  Download02Icon, 
   ArrowRight01Icon,
-  CheckmarkCircle02Icon,
   DashboardSquare01Icon
 } from '@hugeicons/core-free-icons';
 import { Sticker } from '@/components/ui/Sticker';
 import { FeaturesSection } from '@/components/landing/FeaturesSection';
 
 export default function LandingPage() {
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 }
-    }
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
-  };
-
   return (
     <div className="min-h-screen bg-transparent selection:bg-indigo-100">
       {/* Navigation */}
@@ -66,7 +49,7 @@ export default function LandingPage() {
               <span className="text-indigo-600 px-4 inline-block bg-indigo-50 -rotate-2">your way.</span>
             </h1>
             <p className="text-xl text-gray-500 max-w-xl mb-10 leading-relaxed font-medium">
-              The only playground where professional meets powerful. Drag, drop, and let Gemini AI write your success story in seconds.
+              Professional resume builder for fast editing, clean templates, and export-ready results.
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
               <Link 

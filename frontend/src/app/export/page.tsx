@@ -1,7 +1,7 @@
 // frontend/app/export/page.tsx
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { 
@@ -12,24 +12,36 @@ import {
   SparklesIcon
 } from '@hugeicons/core-free-icons';
 import Link from 'next/link';
-import { useResumeStore } from '@/lib/resumeStore';
 import { exportApi } from '@/lib/api';
-import { ResumePreview } from '@/components/resume/ResumePreview';
 import { Sticker } from '@/components/ui/Sticker';
+import ResumeCanvas from '@/components/builder/ResumeCanvas';
+import { loadResumeDraft, loadResumeTitle } from '@/lib/resumeDraft';
 
 export default function ExportPage() {
-  const { resume } = useResumeStore();
+  const resume = useMemo(() => loadResumeDraft(), []);
+  const resumeTitle = useMemo(() => loadResumeTitle(), []);
   const [exporting, setExporting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleDownload = async () => {
     setExporting(true);
+    setError(null);
     try {
-      await exportApi.downloadPdf(resume);
+      const element = document.getElementById("resume-canvas");
+      if (!element) {
+        throw new Error("Resume preview missing. Return to builder and save draft first.");
+      }
+
+      await exportApi.downloadElementAsPdf(
+        element,
+        `${resumeTitle.replace(/\s+/g, "_") || "resume"}.pdf`
+      );
       setSuccess(true);
       setTimeout(() => setSuccess(false), 5000);
     } catch (error) {
       console.error("Export failed:", error);
+      setError(error instanceof Error ? error.message : "Export failed.");
     } finally {
       setExporting(false);
     }
@@ -55,7 +67,7 @@ export default function ExportPage() {
       <main className="flex-1 max-w-7xl mx-auto w-full p-8 flex flex-col lg:flex-row gap-12 items-start justify-center">
         {/* Left: Preview */}
         <div className="flex-1 flex justify-center scale-[0.85] lg:scale-1 origin-top">
-          <ResumePreview />
+          <ResumeCanvas data={resume} />
         </div>
 
         {/* Right: Actions */}
@@ -85,6 +97,12 @@ export default function ExportPage() {
                 Copy Shareable Link
               </button>
             </div>
+
+            {error && (
+              <p className="mt-4 rounded-2xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
+                {error}
+              </p>
+            )}
 
             <div className="mt-8 pt-8 border-t border-gray-50 space-y-4">
                <div className="flex items-center gap-3">
@@ -129,7 +147,7 @@ export default function ExportPage() {
              <Sticker pack="yippy" scene="thinking" size={60} rotate={-8} />
              <div className="flex-1">
                <h4 className="font-bold text-indigo-900 text-sm">Insider Tip</h4>
-               <p className="text-indigo-600/70 text-xs font-medium">Tailor your summary for every job. Use our AI for that step!</p>
+               <p className="text-indigo-600/70 text-xs font-medium">Tailor your summary for every job so each application feels targeted.</p>
              </div>
           </div>
         </div>

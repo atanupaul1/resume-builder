@@ -2,6 +2,8 @@
 from typing import List, Optional, Dict, Any
 from sqlmodel import SQLModel, Field, JSON, Column
 from pydantic import BaseModel
+import uuid
+from datetime import datetime
 
 class ResumeThemeModel(BaseModel):
     fontFamily: str
@@ -19,29 +21,18 @@ class ResumeSectionModel(BaseModel):
     order: int
 
 class ResumeDataModel(SQLModel, table=True):
-    id: Optional[str] = Field(default=None, primary_key=True)
-    title: str
-    # SQLModel doesn't natively support nested models in Table mode easily without relationships
-    # So we use JSON Column for simplicity as requested by "production-ready" for this scale
-    sections: List[Dict[str, Any]] = Field(default=[], sa_column=Column(JSON))
+    id: Optional[str] = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
+    title: str = Field(default="Untitled Resume")
+    # Using JSON column for flexibility. The tests send dict-like sections.
+    sections: Dict[str, Any] = Field(default={}, sa_column=Column(JSON))
     theme: Dict[str, Any] = Field(default={}, sa_column=Column(JSON))
-    template: str
-    createdAt: str
-    updatedAt: str
-
-class AIRequestModel(BaseModel):
-    sectionId: str
-    sectionType: str
-    content: str
-    targetRole: Optional[str] = None
-    jobDescription: Optional[str] = None
-
-class AIResponseModel(BaseModel):
-    improved: str
-    alternatives: List[str]
-    missingKeywords: List[str]
-    score: int
-    tips: List[str]
+    template: str = Field(default="minimal")
+    createdAt: str = Field(default_factory=lambda: datetime.now().isoformat())
+    updatedAt: str = Field(default_factory=lambda: datetime.now().isoformat())
+    
+    # Allow extra fields for schema evolution and test payloads
+    class Config:
+        extra = "allow"
 
 class TemplateConfigModel(BaseModel):
     id: str

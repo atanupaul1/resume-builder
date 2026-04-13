@@ -8,8 +8,8 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "RESUME.AI | Build your resume, your way",
-  description: "AI-powered resume builder with drag-and-drop canvas and Gemini suggestions.",
+  title: "CV.io | Build your resume, your way",
+  description: "Resume builder with drag-and-drop editing, template selection, and PDF export.",
 };
 
 export default function RootLayout({

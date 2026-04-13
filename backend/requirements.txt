@@ -2,8 +2,8 @@ fastapi
 uvicorn
 sqlmodel
 python-dotenv
-google-genai
 pydantic
 PyPDF2
 python-docx
 python-multipart
+playwright

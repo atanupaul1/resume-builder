@@ -4,20 +4,20 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Search01Icon, FilterIcon, SparklesIcon, Tick01Icon } from '@hugeicons/core-free-icons';
+import { SparklesIcon, Tick01Icon } from '@hugeicons/core-free-icons';
 import { resumeApi } from '@/lib/api';
-import { TemplateConfig } from '@/lib/types';
-import { Sticker } from '@/components/ui/Sticker';
+import { TemplateConfig } from '@/lib/templateTypes';
+import { useRouter } from 'next/navigation';
+import { templates as templateRegistry } from '@/components/builder/TemplateSwitcher';
+import { SELECTED_TEMPLATE_KEY } from '@/lib/resumeDraft';
 import { MinimalistCard } from '@/components/ui/MinimalistCard';
 import { CreativeCard } from '@/components/ui/CreativeCard';
 import { ATSCard } from '@/components/ui/ATSCard';
 import { ExecutiveCard } from '@/components/ui/ExecutiveCard';
-import { AcademicCard } from '@/components/ui/AcademicCard';
-import { TechCard } from '@/components/ui/TechCard';
-import { useRouter } from 'next/navigation';
-import { templates as templateRegistry } from '@/components/builder/TemplateSwitcher';
+import { CurrentCard } from '@/components/ui/CurrentCard';
+import { VibrantCard } from '@/components/ui/VibrantCard';
 
-const CATEGORIES = ['All', 'Creative', 'Academic', 'Corporate', 'Tech', 'Minimalist', 'ATS-Friendly'] as const;
+const CATEGORIES = ['All', 'Creative', 'Corporate', 'Tech', 'Minimalist', 'Modern', 'ATS-Friendly'] as const;
 type Category = typeof CATEGORIES[number];
 
 export default function TemplateGallery() {
@@ -34,7 +34,7 @@ export default function TemplateGallery() {
   };
 
   useEffect(() => {
-    resumeApi.getTemplates().then((data: any) => {
+    resumeApi.getTemplates().then((data) => {
       setTemplates(data);
       setLoading(false);
     });
@@ -109,79 +109,39 @@ export default function TemplateGallery() {
               .filter(t => activeFilter === 'All' || t.category === activeFilter)
               .map((template) => {
                 const isSelected = selectedId === template.id;
-                const handleSelect = () => {
+                const handleSelect = (e: React.MouseEvent) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   setSelectedId(template.id);
-                  // Map 'ats-friendly' to 'ats' for the builder state
-                  const templateKey = template.id === 'ats-friendly' ? 'ats' : template.id;
-                  localStorage.setItem('selectedTemplate', templateKey);
+                  localStorage.setItem(SELECTED_TEMPLATE_KEY, template.id);
                   router.push('/builder');
                 };
 
                 return (
-                  <motion.div key={template.id} variants={item} className="w-full">
-                    <div onClick={handleSelect} className="w-full">
-                      {template.id === 'minimal' ? (
-                        <MinimalistCard isSelected={isSelected} />
-                      ) : template.id === 'modern' ? (
-                        <CreativeCard isSelected={isSelected} />
-                      ) : template.id === 'ats-friendly' ? (
-                        <ATSCard isSelected={isSelected} />
-                      ) : template.id === 'executive' ? (
-                        <ExecutiveCard isSelected={isSelected} />
-                      ) : template.id === 'academic' ? (
-                        <AcademicCard isSelected={isSelected} />
-                      ) : template.id === 'tech' ? (
-                        <TechCard isSelected={isSelected} />
-                      ) : (
-                        <div
-                          className={`group relative bg-white border rounded-[32px] p-6 transition-all cursor-pointer hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] ${isSelected ? 'border-indigo-600 ring-4 ring-indigo-600/5 bg-indigo-50/5' : 'border-gray-100 hover:border-indigo-100'
-                            }`}
-                        >
-                          <div className="relative aspect-[3/4] bg-[#F9FAFB] rounded-[24px] overflow-hidden mb-6 border border-gray-100/50 flex items-center justify-center p-4">
-                            <motion.div 
-                              className="w-full h-full bg-white shadow-sm border border-gray-100 origin-top transition-transform duration-500 group-hover:scale-105"
-                            >
-                              {templateRegistry.find(t => t.id === template.id)?.preview}
-                            </motion.div>
-                            
-                            {/* Hover Overlay */}
-                            <div className="absolute inset-0 bg-indigo-600/0 group-hover:bg-indigo-600/5 transition-colors duration-300" />
-                            
-                            {/* Selected Indicator Badge */}
-                            {isSelected && (
-                              <div className="absolute top-4 right-4 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white z-10">
-                                <HugeiconsIcon icon={Tick01Icon} size={16} className="text-white" />
-                              </div>
-                            )}
-                          </div>
-                          
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h3 className="text-lg font-bold text-gray-900 tracking-tight">{template.name}</h3>
-                              <p className="text-xs text-gray-400 font-medium mt-1">
-                                {templateRegistry.find(t => t.id === template.id)?.description || 'Professional Design'}
-                              </p>
-                            </div>
-                            
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${isSelected ? 'bg-green-100 text-green-600' : 'bg-indigo-50 text-indigo-600 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0'}`}>
-                              <HugeiconsIcon icon={isSelected ? Tick01Icon : SparklesIcon} size={18} />
-                            </div>
-                          </div>
-                          
-                          {/* Use Template Button Overlay */}
-                          {!isSelected && (
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                              <span className="px-6 py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl shadow-2xl tracking-wide backdrop-blur-sm whitespace-nowrap">
-                                USE TEMPLATE
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
+                  <motion.div
+                    key={template.id}
+                    variants={item}
+                    className="w-full cursor-pointer"
+                    onClick={handleSelect}
+                  >
+
+                    {template.id === 'minimal' ? (
+                      <MinimalistCard isSelected={isSelected} />
+                    ) : template.id === 'modern' ? (
+                      <CreativeCard isSelected={isSelected} />
+                    ) : template.id === 'ats' ? (
+                      <ATSCard isSelected={isSelected} />
+                    ) : template.id === 'executive' ? (
+                      <ExecutiveCard isSelected={isSelected} />
+                    ) : template.id === 'current' ? (
+                      <CurrentCard isSelected={isSelected} />
+                    ) : (
+                      <VibrantCard isSelected={isSelected} />
+                    )}
                   </motion.div>
                 );
               })}
+
           </motion.div>
         )}
       </div>

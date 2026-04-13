@@ -86,7 +86,6 @@ export default function FormPanel({ activeSection, data, onChange, onClose }: Pr
         {activeSection === "skills" && (
           <SkillsForm
             data={data.skillGroups}
-            resumeData={data}
             onChange={(val) => onChange({ ...data, skillGroups: val })}
           />
         )}

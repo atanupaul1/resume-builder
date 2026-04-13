@@ -7,7 +7,7 @@ function formatDate(d: string) {
   if (!d) return "";
   const [year, month] = d.split("-");
   if (!year || !month) return d;
-  return `${["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][parseInt(month)-1]} ${year}`;
+  return `${["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][parseInt(month) - 1]} ${year}`;
 }
 function dateRange(s: string, e: string, current: boolean) {
   const sf = formatDate(s); const ef = current ? "Present" : formatDate(e);

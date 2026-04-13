@@ -1,10 +1,9 @@
 "use client";
-import { SkillGroup, ResumeData } from "@/types/resume";
+import { SkillGroup } from "@/types/resume";
 import { useState } from "react";
 
 interface Props {
   data: SkillGroup[];
-  resumeData: ResumeData;
   onChange: (data: SkillGroup[]) => void;
 }
 
@@ -14,11 +13,10 @@ const newGroup = (): SkillGroup => ({
   skills: [],
 });
 
-export default function SkillsForm({ data, resumeData, onChange }: Props) {
+export default function SkillsForm({ data, onChange }: Props) {
   const [inputValues, setInputValues] = useState<Record<string, string>>({});
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiError, setAiError] = useState("");
-  const [suggestedGroups, setSuggestedGroups] = useState<{ category: string; skills: string[] }[]>([]);
+  const [draggingSkillIndex, setDraggingSkillIndex] = useState<{ groupId: string; index: number } | null>(null);
+  const [dragOverSkillIndex, setDragOverSkillIndex] = useState<{ groupId: string; index: number } | null>(null);
 
   const addGroup = () => onChange([...data, newGroup()]);
 
@@ -30,14 +28,11 @@ export default function SkillsForm({ data, resumeData, onChange }: Props) {
   const addSkill = (groupId: string) => {
     const val = (inputValues[groupId] || "").trim();
     if (!val) return;
-    const group = data.find((g) => g.id === groupId)!;
-    if (group.skills.includes(val)) return;
+    const group = data.find((g) => g.id === groupId);
+    if (!group || group.skills.includes(val)) return;
     updateGroup(groupId, "skills", [...group.skills, val]);
     setInputValues((prev) => ({ ...prev, [groupId]: "" }));
   };
-
-  const [draggingSkillIndex, setDraggingSkillIndex] = useState<{ groupId: string; index: number } | null>(null);
-  const [dragOverSkillIndex, setDragOverSkillIndex] = useState<{ groupId: string; index: number } | null>(null);
 
   const handleSkillDragStart = (groupId: string, index: number) => {
     setDraggingSkillIndex({ groupId, index });
@@ -52,18 +47,11 @@ export default function SkillsForm({ data, resumeData, onChange }: Props) {
 
   const handleSkillDrop = (groupId: string, dropIndex: number) => {
     if (!draggingSkillIndex || draggingSkillIndex.groupId !== groupId) return;
-    const fromIndex = draggingSkillIndex.index;
-    if (fromIndex === dropIndex) {
-      setDraggingSkillIndex(null);
-      setDragOverSkillIndex(null);
-      return;
-    }
-
     const group = data.find((g) => g.id === groupId);
     if (!group) return;
 
     const newSkills = [...group.skills];
-    const [moved] = newSkills.splice(fromIndex, 1);
+    const [moved] = newSkills.splice(draggingSkillIndex.index, 1);
     newSkills.splice(dropIndex, 0, moved);
 
     updateGroup(groupId, "skills", newSkills);
@@ -72,154 +60,20 @@ export default function SkillsForm({ data, resumeData, onChange }: Props) {
   };
 
   const removeSkill = (groupId: string, skill: string) => {
-    const group = data.find((g) => g.id === groupId)!;
-    updateGroup(groupId, "skills", group.skills.filter((s) => s !== skill));
-  };
-
-  const suggestSkills = async () => {
-    setAiLoading(true);
-    setAiError("");
-    setSuggestedGroups([]);
-    try {
-      const existingSkills = data.flatMap((g) => g.skills);
-      const res = await fetch("/api/ai/suggest-skills", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jobTitle: resumeData.personalInfo.jobTitle,
-          existingSkills,
-          experience: resumeData.workExperience,
-        }),
-      });
-      const json = await res.json();
-      if (json.error) throw new Error(json.error);
-      setSuggestedGroups(json.groups || []);
-    } catch (err) {
-      setAiError(err instanceof Error ? err.message : "Something went wrong");
-    } finally {
-      setAiLoading(false);
-    }
-  };
-
-  const addSuggestedGroup = (group: { category: string; skills: string[] }) => {
-    onChange([
-      ...data,
-      { id: crypto.randomUUID(), category: group.category, skills: group.skills },
-    ]);
-    setSuggestedGroups((prev) => prev.filter((g) => g.category !== group.category));
-  };
-
-  const addSingleSkill = (groupId: string, skill: string) => {
     const group = data.find((g) => g.id === groupId);
     if (!group) return;
-    if (group.skills.includes(skill)) return;
-    updateGroup(groupId, "skills", [...group.skills, skill]);
+    updateGroup(groupId, "skills", group.skills.filter((s) => s !== skill));
   };
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <p className="text-xs text-gray-500">
-          Group by category (e.g. &quot;Languages&quot;, &quot;Frameworks&quot;). Press Enter to add a skill tag.
-        </p>
-        <button
-          onClick={suggestSkills}
-          disabled={aiLoading}
-          className="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium text-indigo-600 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition-all disabled:opacity-50"
-        >
-          {aiLoading ? (
-            <svg className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
-            </svg>
-          ) : (
-            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" />
-            </svg>
-          )}
-          {aiLoading ? "Suggesting..." : "Suggest skills"}
-        </button>
-      </div>
+      <p className="text-xs text-gray-500">
+        Group by category (e.g. &quot;Languages&quot;, &quot;Frameworks&quot;). Press Enter to add a skill tag.
+      </p>
 
-      {/* AI Error */}
-      {aiError && (
-        <p className="text-xs text-red-500 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{aiError}</p>
-      )}
-
-      {/* AI Suggested Groups */}
-      {suggestedGroups.length > 0 && (
-        <div className="rounded-xl border border-indigo-200 bg-gradient-to-br from-indigo-50 to-violet-50 p-3 space-y-2">
-          <div className="flex items-center gap-1.5 mb-2">
-            <svg className="w-3 h-3 text-indigo-500" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" />
-            </svg>
-            <span className="text-[11px] font-semibold text-indigo-600 uppercase tracking-wider">
-              AI Suggestions — click to add
-            </span>
-            <button onClick={() => setSuggestedGroups([])} className="ml-auto text-indigo-300 hover:text-indigo-500">
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          {suggestedGroups.map((group) => (
-            <div key={group.category} className="bg-white rounded-lg border border-indigo-100 p-2.5">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs font-semibold text-gray-700">{group.category}</span>
-                <button
-                  onClick={() => addSuggestedGroup(group)}
-                  className="text-[11px] text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1"
-                >
-                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
-                  Add all
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {group.skills.map((skill) => {
-                  const alreadyExists = data.some((g) => g.skills.includes(skill));
-                  return (
-                    <button
-                      key={skill}
-                      disabled={alreadyExists}
-                      onClick={() => {
-                        // Find a matching category group or create new
-                        const match = data.find((g) => g.category.toLowerCase() === group.category.toLowerCase());
-                        if (match) {
-                          addSingleSkill(match.id, skill);
-                        } else {
-                          onChange([...data, { id: crypto.randomUUID(), category: group.category, skills: [skill] }]);
-                        }
-                        setSuggestedGroups((prev) =>
-                          prev.map((g) =>
-                            g.category === group.category
-                              ? { ...g, skills: g.skills.filter((s) => s !== skill) }
-                              : g
-                          ).filter((g) => g.skills.length > 0)
-                        );
-                      }}
-                      className={`text-[11px] px-2 py-1 rounded-full border transition-all
-                        ${alreadyExists
-                          ? "bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed line-through"
-                          : "bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100 cursor-pointer"
-                        }`}
-                    >
-                      {alreadyExists ? "" : "+ "}{skill}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Existing skill groups */}
-      {data.length === 0 && !suggestedGroups.length && (
+      {data.length === 0 && (
         <div className="text-center py-6 text-gray-400 text-sm">
-          No skill groups yet. Add manually or use AI suggestions above.
+          No skill groups yet. Add your skills manually below.
         </div>
       )}
 
@@ -254,19 +108,21 @@ export default function SkillsForm({ data, resumeData, onChange }: Props) {
                   onDragStart={() => handleSkillDragStart(group.id, index)}
                   onDragOver={(e) => handleSkillDragOver(e, group.id, index)}
                   onDrop={() => handleSkillDrop(group.id, index)}
-                  onDragEnd={() => { setDraggingSkillIndex(null); setDragOverSkillIndex(null); }}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-2xl border border-indigo-100 shadow-sm cursor-move transition-all
-                    ${isDragging ? "opacity-30 scale-95" : "opacity-100 scale-100"}
-                    ${isOver ? "border-indigo-400 bg-indigo-100 -translate-y-1" : ""}
-                  `}
+                  onDragEnd={() => {
+                    setDraggingSkillIndex(null);
+                    setDragOverSkillIndex(null);
+                  }}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-2xl border border-indigo-100 shadow-sm cursor-move transition-all ${
+                    isDragging ? "opacity-30 scale-95" : "opacity-100 scale-100"
+                  } ${isOver ? "border-indigo-400 bg-indigo-100 -translate-y-1" : ""}`}
                 >
                   {skill}
-                  <button 
-                    onClick={() => removeSkill(group.id, skill)} 
-                    onMouseDown={(e) => e.stopPropagation()} // Prevent drag start when clicking remove
+                  <button
+                    onClick={() => removeSkill(group.id, skill)}
+                    onMouseDown={(e) => e.stopPropagation()}
                     className="w-3.5 h-3.5 flex items-center justify-center rounded-full hover:bg-indigo-300 transition-colors text-indigo-300 hover:text-indigo-600 ml-1 text-sm leading-none"
                   >
-                    ×
+                    x
                   </button>
                 </div>
               );
@@ -280,7 +136,10 @@ export default function SkillsForm({ data, resumeData, onChange }: Props) {
               value={inputValues[group.id] || ""}
               onChange={(e) => setInputValues((prev) => ({ ...prev, [group.id]: e.target.value }))}
               onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === ",") { e.preventDefault(); addSkill(group.id); }
+                if (e.key === "Enter" || e.key === ",") {
+                  e.preventDefault();
+                  addSkill(group.id);
+                }
               }}
             />
             <button

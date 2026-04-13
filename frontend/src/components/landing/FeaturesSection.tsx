@@ -1,30 +1,29 @@
-// frontend/src/components/landing/FeaturesSection.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  DragDropIcon, 
-  AiMagicIcon, 
-  Pdf01Icon, 
-  Tick01Icon 
+import {
+  DragDropIcon,
+  File01Icon,
+  Pdf01Icon,
+  Tick01Icon
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 
-const FeatureCard = ({ 
-  icon, 
-  iconBg, 
-  iconColor, 
-  title, 
-  description, 
-  children 
-}: { 
-  icon: any, 
-  iconBg: string, 
-  iconColor: string, 
-  title: string, 
-  description: string, 
-  children: React.ReactNode 
+const FeatureCard = ({
+  icon,
+  iconBg,
+  iconColor,
+  title,
+  description,
+  children
+}: {
+  icon: React.ComponentProps<typeof HugeiconsIcon>["icon"];
+  iconBg: string;
+  iconColor: string;
+  title: string;
+  description: string;
+  children: React.ReactNode;
 }) => {
   return (
     <motion.div
@@ -37,7 +36,7 @@ const FeatureCard = ({
       <div className={`w-12 h-12 rounded-xl ${iconBg} ${iconColor} flex items-center justify-center mb-6`}>
         <HugeiconsIcon icon={icon} size={24} />
       </div>
-      
+
       <h3 className="text-xl font-bold text-slate-900 mb-3">{title}</h3>
       <p className="text-slate-500 text-sm font-medium mb-8 leading-relaxed">
         {description}
@@ -51,51 +50,17 @@ const FeatureCard = ({
 };
 
 export const FeaturesSection = () => {
-  // Drag & Drop State
   const [dragOrder, setDragOrder] = useState(['Education', 'Skills']);
-  
-  // AI Suggestions State
-  const [aiText, setAiText] = useState('I am a good coder');
-  const [isHoveringAi, setIsHoveringAi] = useState(false);
-  
-  // PDF Progress State
+  const [activeTemplate, setActiveTemplate] = useState<'Minimal' | 'Executive' | 'Tech'>('Minimal');
   const [pdfProgress, setPdfProgress] = useState(0);
   const [isPdfComplete, setIsPdfComplete] = useState(false);
   const [isHoveringPdf, setIsHoveringPdf] = useState(false);
 
-  // Typewriter effect logic
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    const targetText = 'Full-stack developer with expertise in scalable Python architectures';
-    
-    if (isHoveringAi) {
-      if (aiText.length > 0) {
-        // Deleting
-        timeout = setTimeout(() => {
-          setAiText(prev => prev.slice(0, -1));
-        }, 50);
-      } else {
-        // Typing
-        const currentLength = aiText.length;
-        if (aiText !== targetText) {
-          timeout = setTimeout(() => {
-            setAiText(targetText.slice(0, aiText.length + 1));
-          }, 40);
-        }
-      }
-    } else {
-      setAiText('I am a good coder');
-    }
-    
-    return () => clearTimeout(timeout);
-  }, [aiText, isHoveringAi]);
-
-  // PDF Progress logic
-  useEffect(() => {
+  React.useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isHoveringPdf && pdfProgress < 100) {
       interval = setInterval(() => {
-        setPdfProgress(prev => {
+        setPdfProgress((prev) => {
           const next = prev + 5;
           if (next >= 100) {
             setIsPdfComplete(true);
@@ -103,7 +68,7 @@ export const FeaturesSection = () => {
           }
           return next;
         });
-      }, 75); // ~1.5 seconds total (20 steps * 75ms)
+      }, 75);
     } else if (!isHoveringPdf) {
       setPdfProgress(0);
       setIsPdfComplete(false);
@@ -114,9 +79,8 @@ export const FeaturesSection = () => {
   return (
     <section className="py-24 bg-transparent px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
         <div className="text-center mb-20">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -124,22 +88,19 @@ export const FeaturesSection = () => {
           >
             Everything you <span className="text-indigo-600">need.</span>
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
             className="text-slate-500 font-medium text-lg"
           >
-            Tools designed for modern recruitment.
+            Tools built for fast resume editing.
           </motion.p>
         </div>
 
-        {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          
-          {/* Card 1: Drag & Drop */}
-          <div 
+          <div
             onMouseEnter={() => setDragOrder(['Skills', 'Education'])}
             onMouseLeave={() => setDragOrder(['Education', 'Skills'])}
           >
@@ -148,14 +109,14 @@ export const FeaturesSection = () => {
               iconBg="bg-blue-50"
               iconColor="text-blue-600"
               title="Drag & drop builder"
-              description="Reorder sections effortlessly. See changes in live A4 preview."
+              description="Reorder sections fast. See changes in live A4 preview."
             >
               <div className="flex flex-col gap-3 w-40">
                 {dragOrder.map((item) => (
                   <motion.div
                     key={item}
                     layout
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     className="bg-white border border-indigo-100/50 p-3 rounded-xl shadow-sm flex items-center gap-3"
                   >
                     <div className="w-2 h-2 rounded-full bg-indigo-200" />
@@ -166,44 +127,34 @@ export const FeaturesSection = () => {
             </FeatureCard>
           </div>
 
-          {/* Card 2: AI Suggestions */}
-          <div 
-            onMouseEnter={() => setIsHoveringAi(true)}
-            onMouseLeave={() => setIsHoveringAi(false)}
+          <FeatureCard
+            icon={File01Icon}
+            iconBg="bg-violet-50"
+            iconColor="text-violet-600"
+            title="Template switching"
+            description="Swap styles while keeping same resume data and structure."
           >
-            <FeatureCard
-              icon={AiMagicIcon}
-              iconBg="bg-purple-50"
-              iconColor="text-purple-600"
-              title="AI suggestions"
-              description="Powered by Gemini 2.0. Quantified bullet points within one click."
-            >
-              <div className="w-full h-full flex items-center justify-center p-4">
-                <div className="w-full bg-white border border-slate-100 rounded-xl p-4 shadow-sm min-h-[80px]">
-                  <p className="text-xs font-medium text-slate-600 leading-relaxed">
-                    {aiText.split('').map((char, i) => (
-                      <motion.span
-                        key={i}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className={isHoveringAi ? "bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent" : ""}
-                      >
-                        {char}
-                      </motion.span>
-                    ))}
-                    <motion.span
-                      animate={{ opacity: [0, 1, 0] }}
-                      transition={{ duration: 0.8, repeat: Infinity }}
-                      className="inline-block w-0.5 h-3 bg-purple-500 ml-0.5 align-middle"
-                    />
-                  </p>
-                </div>
-              </div>
-            </FeatureCard>
-          </div>
+            <div className="w-full flex flex-col gap-3">
+              {(['Minimal', 'Executive', 'Tech'] as const).map((template) => (
+                <button
+                  key={template}
+                  onClick={() => setActiveTemplate(template)}
+                  className={`flex items-center justify-between rounded-xl border px-4 py-3 text-left transition-all ${
+                    activeTemplate === template
+                      ? 'border-violet-300 bg-white shadow-sm'
+                      : 'border-slate-200 bg-slate-50 text-slate-500'
+                  }`}
+                >
+                  <span className="text-xs font-bold">{template}</span>
+                  {activeTemplate === template && (
+                    <span className="text-[10px] font-bold uppercase tracking-wide text-violet-600">Active</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </FeatureCard>
 
-          {/* Card 3: PDF Export */}
-          <div 
+          <div
             onMouseEnter={() => setIsHoveringPdf(true)}
             onMouseLeave={() => {
               setIsPdfComplete(false);
@@ -215,12 +166,12 @@ export const FeaturesSection = () => {
               iconBg="bg-rose-50"
               iconColor="text-rose-600"
               title="One-click PDF export"
-              description="High-quality, ATS-optimized exports ready for application."
+              description="High-quality exports ready for internship and job applications."
             >
               <div className="w-48 flex flex-col gap-4">
                 <AnimatePresence mode="wait">
                   {!isPdfComplete ? (
-                    <motion.div 
+                    <motion.div
                       key="loader"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -232,7 +183,7 @@ export const FeaturesSection = () => {
                         <span className="text-[10px] font-bold text-slate-600">{pdfProgress}%</span>
                       </div>
                       <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
-                        <motion.div 
+                        <motion.div
                           className="h-full bg-gradient-to-r from-blue-500 to-indigo-600"
                           initial={{ width: 0 }}
                           animate={{ width: `${pdfProgress}%` }}
@@ -244,7 +195,7 @@ export const FeaturesSection = () => {
                       key="success"
                       initial={{ scale: 0, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 15 }}
                       className="flex flex-col items-center gap-2"
                     >
                       <div className="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center shadow-lg shadow-green-100">
@@ -257,7 +208,6 @@ export const FeaturesSection = () => {
               </div>
             </FeatureCard>
           </div>
-
         </div>
       </div>
     </section>
