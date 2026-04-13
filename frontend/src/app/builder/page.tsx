@@ -98,12 +98,18 @@ export default function BuilderPage() {
       
       setResumeData(prev => ({
         ...prev,
-        personalInfo: { ...prev.personalInfo, ...(parsedData.personalInfo || {}) },
+        personalInfo: { 
+          ...prev.personalInfo, 
+          ...(parsedData.personalInfo || {}) 
+        },
         summary: parsedData.summary || prev.summary,
         workExperience: parsedData.workExperience?.length ? parsedData.workExperience : prev.workExperience,
         education: parsedData.education?.length ? parsedData.education : prev.education,
         skillGroups: parsedData.skillGroups?.length ? parsedData.skillGroups : prev.skillGroups,
-        contact: { ...prev.personalInfo.email || prev.personalInfo.phone ? prev.contact : (parsedData.contact || {}) },
+        contact: { 
+          ...prev.contact, 
+          ...(parsedData.contact || {}) 
+        },
       }));
       showStatus("Resume imported. Review fields before export.", "success");
     } catch (err) {
