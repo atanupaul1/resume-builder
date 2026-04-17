@@ -32,11 +32,15 @@ export const resumeApi = {
     if (!response.ok) {
       let detail = `Upload failed with status ${response.status}`;
       try {
-        const errorData = await response.json();
-        detail = errorData.detail || errorData.error || detail;
-      } catch {
-        const errorText = await response.text();
-        if (errorText) detail = errorText;
+        const text = await response.text();
+        try {
+          const errorData = JSON.parse(text);
+          detail = errorData.detail || errorData.error || detail;
+        } catch {
+          if (text) detail = text;
+        }
+      } catch (e) {
+        // Fallback if text() also fails
       }
       throw new Error(detail);
     }
