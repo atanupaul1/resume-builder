@@ -38,7 +38,6 @@ export interface Education {
   current: boolean;
   grade: string;
   location: string;
-  FACK: st
 }
 
 export interface SkillGroup {
