@@ -1,0 +1,124 @@
+version: "2"
+type: backend
+tech_stack:
+  - Python
+  - FastAPI
+  - SQLModel
+  - SQLite
+features:
+  - name: Resume Management API
+    description: CRUD operations and template listing for resumes
+    files:
+      - routers/resume.py
+      - models.py
+      - database.py
+    endpoints:
+      - method: GET
+        path: /api/resume/templates
+        description: List all available resume templates
+        auth_required: false
+        response_schema:
+          "200": List[TemplateConfigModel]
+      - method: GET
+        path: /api/resume/{id}
+        description: Retrieve a specific resume by ID
+        auth_required: false
+        response_schema:
+          "200": ResumeDataModel
+          "404": Resume not found
+      - method: POST
+        path: /api/resume/upload
+        description: Upload and parse a resume file
+        auth_required: false
+        request_schema:
+          body:
+            file: File
+        response_schema:
+          "200": ParsedResumeData
+          "400": Extraction error
+          "500": Parsing error
+      - method: POST
+        path: /api/resume
+        description: Create a new resume record
+        auth_required: false
+        request_schema:
+          body: ResumeDataModel
+        response_schema:
+          "200": ResumeDataModel
+      - method: PUT
+        path: /api/resume/{id}
+        description: Update an existing resume
+        auth_required: false
+        request_schema:
+          body: ResumeDataModel
+        response_schema:
+          "200": ResumeDataModel
+          "404": Resume not found
+      - method: DELETE
+        path: /api/resume/{id}
+        description: Delete a resume record
+        auth_required: false
+        response_schema:
+          "200": ok
+          "404": Resume not found
+  - name: AI Assistant API
+    description: AI-powered resume enhancement, summarization, and scoring
+    files:
+      - routers/ai_agent.py
+      - services/gemini_service.py
+    endpoints:
+      - method: POST
+        path: /api/ai/enhance
+        description: Enhance a specific resume section
+        auth_required: false
+        request_schema:
+          body: AIRequestModel
+        response_schema:
+          "200": AIResponseModel
+      - method: POST
+        path: /api/ai/summary
+        description: Generate a summary from resume data
+        auth_required: false
+        request_schema:
+          body: resume_data
+        response_schema:
+          "200": summary
+      - method: POST
+        path: /api/ai/score
+        description: Score a resume based on completeness/quality
+        auth_required: false
+        request_schema:
+          body: resume_data
+        response_schema:
+          "200": score_data
+      - method: POST
+        path: /api/ai/autofill
+        description: Autofill resume sections from job description
+        auth_required: false
+        request_schema:
+          body: {job_description: string, section_type: string}
+        response_schema:
+          "200": autofill_data
+      - method: POST
+        path: /api/ai/keywords
+        description: Suggest keywords based on job title and industry
+        auth_required: false
+        request_schema:
+          body: {job_title: string, industry: string}
+        response_schema:
+          "200": keywords
+  - name: Export API
+    description: Export resume data to PDF
+    files:
+      - routers/export.py
+      - services/pdf_service.py
+    endpoints:
+      - method: POST
+        path: /api/export/pdf
+        description: Convert HTML to PDF and return as download
+        auth_required: false
+        request_schema:
+          body: {html: string}
+        response_schema:
+          "200": application/pdf
+known_limitations: []

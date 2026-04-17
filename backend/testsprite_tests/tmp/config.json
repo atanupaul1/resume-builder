@@ -1,0 +1,19 @@
+{
+  "status": "commited",
+  "type": "backend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:8000",
+  "backendAuthType": "public",
+  "executionArgs": {
+    "projectName": "backend",
+    "projectPath": "d:\\Projects\\IIT-Resume_template\\resume-builder\\backend",
+    "testIds": [],
+    "additionalInstruction": "Test all backend endpoints defined in the test plan.",
+    "serverMode": "development",
+    "envs": {
+      "API_KEY": "sk-user-EcamIfSnn_ngJkHCsXZjO76OnM5pkZBw2qHGf1IREyuKzGg8yJlYqDp-0_hDjUDrRnxKtZs71epunBP7Es5tyCwdfEuNKaVLjl3moz9DsxuEaZAqlYIw2VaOVoN0AOFKqls"
+    }
+  },
+  "serverPort": 55273,
+  "proxy": "http://cc6cf87d-e1b2-4c11-a77a-727826afad85:hPC5SUTg86HGQzprTIVhrOaSkay7g1p7@tun.testsprite.com:8080"
+}

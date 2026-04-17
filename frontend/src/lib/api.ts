@@ -2,7 +2,10 @@ import axios from 'axios';
 import { TemplateConfig } from './templateTypes';
 import { ResumeData } from '@/types/resume';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 
+  (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'
+    ? '/_/backend' 
+    : 'http://localhost:8000');
 
 const api = axios.create({
   baseURL: API_URL,

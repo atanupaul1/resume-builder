@@ -86,12 +86,20 @@ async def upload_resume(file: UploadFile = File(...)):
         text = extract_text_from_file(content, file.filename)
         print(f"Extracted text length: {len(text) if text else 0}", flush=True)
 
-        if not text.strip():
+        if not text or not text.strip():
             raise HTTPException(status_code=400, detail="No readable text found in uploaded file.")
 
-        return parse_resume_text(text)
+        parsed = parse_resume_text(text)
+        if not parsed.get("personalInfo") and not parsed.get("summary"):
+            raise HTTPException(status_code=400, detail="Could not parse resume content from uploaded file.")
+        return parsed
     except HTTPException:
         raise
+    except ValueError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=str(e) or "No readable text found in uploaded file.",
+        )
     except Exception as e:
         print(f"UPLOAD ERROR TRACEBACK:\n{traceback.format_exc()}", flush=True)
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
