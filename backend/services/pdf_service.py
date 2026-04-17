@@ -1,7 +1,14 @@
-from playwright.async_api import async_playwright
+try:
+    from playwright.async_api import async_playwright
+    PLAYWRIGHT_AVAILABLE = True
+except ImportError:
+    PLAYWRIGHT_AVAILABLE = False
 
 class PDFService:
     async def render_resume_to_pdf(self, html_content: str) -> bytes:
+        if not PLAYWRIGHT_AVAILABLE:
+            raise RuntimeError("Backend PDF export is not available in this environment. Please use the frontend print feature.")
+
         async with async_playwright() as p:
             browser = await p.chromium.launch(headless=True)
             page = await browser.new_page()
