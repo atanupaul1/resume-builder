@@ -1,14 +1,11 @@
 import type { NextConfig } from "next";
 
-const isProd = process.env.NODE_ENV === 'production';
-
 const nextConfig: NextConfig = {
-  output: 'export',
+  // Removed output: 'export' to allow Vercel's native Next.js handling
   images: {
     unoptimized: true,
   },
-  // GitHub Pages needs the repository name as a base path
-  basePath: isProd ? '/resume-builder' : '',
+  // Removed basePath that was causing 404s on Vercel
   trailingSlash: true,
 };
 
