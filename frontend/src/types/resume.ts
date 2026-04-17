@@ -1,3 +1,9 @@
+export interface CustomField {
+  id: string;
+  label: string;
+  value: string;
+}
+
 export interface PersonalInfo {
   fullName: string;
   jobTitle: string;
@@ -6,7 +12,9 @@ export interface PersonalInfo {
   location: string;
   linkedin: string;
   website: string;
+  github: string;
   photo?: string;
+  customFields?: CustomField[];
 }
 
 export interface WorkExperience {
@@ -30,6 +38,7 @@ export interface Education {
   current: boolean;
   grade: string;
   location: string;
+  FACK: st
 }
 
 export interface SkillGroup {
@@ -38,13 +47,20 @@ export interface SkillGroup {
   skills: string[];
 }
 
-export interface ContactInfo {
-  email: string;
-  phone: string;
-  location: string;
-  linkedin: string;
-  website: string;
-  github: string;
+export interface CustomSection {
+  id: string;
+  title: string;
+  content: string;
+}
+
+export interface Publication {
+  id: string;
+  doi: string;
+  title: string;
+  authors: string;
+  year: string;
+  venue: string;
+  url: string;
 }
 
 export type SectionKey =
@@ -53,7 +69,8 @@ export type SectionKey =
   | "workExperience"
   | "education"
   | "skills"
-  | "contact";
+  | "custom"
+  | "publications";
 
 export const DEFAULT_SECTION_ORDER: SectionKey[] = [
   "personalInfo",
@@ -61,7 +78,8 @@ export const DEFAULT_SECTION_ORDER: SectionKey[] = [
   "workExperience",
   "education",
   "skills",
-  "contact",
+  "custom",
+  "publications",
 ];
 
 export interface ResumeData {
@@ -70,10 +88,12 @@ export interface ResumeData {
   workExperience: WorkExperience[];
   education: Education[];
   skillGroups: SkillGroup[];
-  contact: ContactInfo;
+  customSections: CustomSection[];
+  publications: Publication[];
   template: "minimal" | "modern" | "ats" | "executive" | "current" | "creative";
   accentColor: string;
   sectionOrder: SectionKey[];
+  hiddenSections?: SectionKey[];
 }
 
 export const defaultResumeData: ResumeData = {
@@ -85,20 +105,16 @@ export const defaultResumeData: ResumeData = {
     location: "",
     linkedin: "",
     website: "",
+    github: "",
     photo: "",
+    customFields: [],
   },
   summary: "",
   workExperience: [],
   education: [],
   skillGroups: [],
-  contact: {
-    email: "",
-    phone: "",
-    location: "",
-    linkedin: "",
-    website: "",
-    github: "",
-  },
+  customSections: [],
+  publications: [],
   template: "minimal",
   accentColor: "#6C63FF",
   sectionOrder: [...DEFAULT_SECTION_ORDER],

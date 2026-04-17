@@ -1,9 +1,10 @@
 // frontend/components/ui/Icon.tsx
 import React from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
+import type { ComponentProps } from 'react';
 
 interface IconProps {
-  icon: any;
+  icon: ComponentProps<typeof HugeiconsIcon>['icon'];
   size?: number;
   color?: string;
   strokeWidth?: number;

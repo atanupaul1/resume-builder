@@ -96,6 +96,43 @@ export default function CurrentTemplate({ data }: Props) {
           </section>
         ) : null;
 
+      case "custom":
+        return (data.customSections || []).length > 0 ? (
+          <div key={key}>
+            {(data.customSections || []).map((section) => (
+              <section key={section.id} style={{ marginBottom: denseMode ? "18px" : "24px", breakInside: "avoid-page" }}>
+                <h2 style={{ fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "2px", color: accent, marginBottom: "8px" }}>
+                  {section.title}
+                </h2>
+                <p style={{ fontSize: denseMode ? "11.5px" : "12px", color: "#334155", lineHeight: "1.55", margin: 0, whiteSpace: "pre-wrap" }}>
+                  {section.content}
+                </p>
+              </section>
+            ))}
+          </div>
+        ) : null;
+
+      case "publications":
+        return (data.publications || []).length > 0 ? (
+          <section key={key} style={{ marginBottom: denseMode ? "18px" : "24px", breakInside: "avoid-page" }}>
+            <h2 style={{ fontSize: "11px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "2px", color: accent, marginBottom: "12px" }}>
+              Publications
+            </h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {(data.publications || []).map((pub) => (
+                <div key={pub.id}>
+                  <p style={{ fontSize: "13px", fontWeight: 700, color: "#0f172a", margin: 0 }}>{pub.title}</p>
+                  <p style={{ fontSize: "11px", color: "#475569", margin: "2px 0" }}>{pub.authors}</p>
+                  <p style={{ fontSize: "11px", color: accent, fontWeight: 600, margin: 0 }}>
+                    {pub.venue} — {pub.year}
+                    {pub.doi && <span style={{ marginLeft: "8px", color: "#94a3b8", fontWeight: 400 }}>DOI: {pub.doi}</span>}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : null;
+
       default:
         return null;
     }
@@ -115,6 +152,11 @@ export default function CurrentTemplate({ data }: Props) {
           {p.phone && <span>{p.phone}</span>}
           {p.location && <span>{p.location}</span>}
           {p.linkedin && <span>in/{p.linkedin}</span>}
+          {p.website && <span>{p.website}</span>}
+          {p.github && <span>gh/{p.github}</span>}
+          {(p.customFields || []).map((field) => (
+            field.label && field.value && <span key={field.id}>{field.label}: {field.value}</span>
+          ))}
         </div>
       </header>
 

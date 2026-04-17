@@ -42,7 +42,10 @@ export default function MinimalTemplate({ data }: Props) {
         <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 16px", marginTop: "10px", fontFamily: "sans-serif", fontSize: "11px", color: "#6b7280" }}>
           {p.email && <span>✉ {p.email}</span>}{p.phone && <span>✆ {p.phone}</span>}
           {p.location && <span>⌖ {p.location}</span>}{p.linkedin && <span>in {p.linkedin}</span>}
-          {p.website && <span>⬡ {p.website}</span>}
+          {p.website && <span>⬡ {p.website}</span>}{p.github && <span>gh {p.github}</span>}
+          {(p.customFields || []).map((field) => (
+            field.label && field.value && <span key={field.id}>{field.label}: {field.value}</span>
+          ))}
         </div>
       </div>
     ) : null,
@@ -113,8 +116,30 @@ export default function MinimalTemplate({ data }: Props) {
         </div>
       </section>
     ) : null,
+    custom: (data.customSections || []).length > 0 ? (
+      <div key="custom">
+        {(data.customSections || []).map((section) => (
+          <section key={section.id} style={{ marginBottom: "20px" }}>
+            <SectionTitle label={section.title} accent={accent} />
+            <p style={{ fontFamily: "sans-serif", fontSize: "12px", color: "#374151", lineHeight: "1.7", margin: 0, whiteSpace: "pre-wrap" }}>{section.content}</p>
+          </section>
+        ))}
+      </div>
+    ) : null,
+    publications: (data.publications || []).length > 0 ? (
+      <section key="publications" style={{ marginBottom: "20px" }}>
+        <SectionTitle label="Publications" accent={accent} />
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {(data.publications || []).map((pub) => (
+            <div key={pub.id} style={{ fontSize: "12px", color: "#374151", lineHeight: "1.5" }}>
+              <span style={{ fontWeight: 600 }}>{pub.title}</span>. {pub.authors}. <i>{pub.venue}</i> ({pub.year}).
+              {pub.doi && <span style={{ color: "#6b7280", marginLeft: "5px" }}>DOI: {pub.doi}</span>}
+            </div>
+          ))}
+        </div>
+      </section>
+    ) : null,
 
-    contact: null,
   };
 
   return (

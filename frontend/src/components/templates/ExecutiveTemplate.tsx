@@ -99,8 +99,35 @@ export default function ExecutiveTemplate({ data }: Props) {
       </section>
     ) : null,
     
+    custom: (data.customSections || []).length > 0 ? (
+      <div key="custom">
+        {(data.customSections || []).map((section) => (
+          <section key={section.id} style={{ marginBottom: "28px" }}>
+            <h2 style={{ fontSize: "14px", fontWeight: 700, color: accent, textTransform: "uppercase", letterSpacing: "1px", borderBottom: `2px solid ${accent}`, paddingBottom: "4px", marginBottom: "12px" }}>{section.title}</h2>
+            <p style={{ fontSize: "11.5px", color: "#334155", lineHeight: "1.6", margin: 0, whiteSpace: "pre-wrap" }}>{section.content}</p>
+          </section>
+        ))}
+      </div>
+    ) : null,
+    publications: (data.publications || []).length > 0 ? (
+      <section key="publications" style={{ marginBottom: "28px" }}>
+        <h2 style={{ fontSize: "14px", fontWeight: 700, color: accent, textTransform: "uppercase", letterSpacing: "1px", borderBottom: `2px solid ${accent}`, paddingBottom: "4px", marginBottom: "12px" }}>Publications</h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          {(data.publications || []).map((pub) => (
+            <div key={pub.id}>
+              <p style={{ fontSize: "12px", fontWeight: 700, color: "#0f172a", margin: 0 }}>{pub.title}</p>
+              <p style={{ fontSize: "11px", color: "#475569", margin: "2px 0 0" }}>{pub.authors}</p>
+              <p style={{ fontSize: "11px", color: accent, fontWeight: 600, margin: "2px 0 0" }}>
+                {pub.venue}, {pub.year}
+                {pub.doi && <span style={{ marginLeft: "10px", color: "#94a3b8", fontWeight: 400 }}>DOI: {pub.doi}</span>}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+    ) : null,
+    
     personalInfo: null,
-    contact: null
   };
 
   return (
@@ -121,6 +148,9 @@ export default function ExecutiveTemplate({ data }: Props) {
           {p.phone && <span>{p.phone}</span>}
           {p.linkedin && <span>LinkedIn.com/in/{p.linkedin}</span>}
           {p.website && <span>{p.website}</span>}
+          {(p.customFields || []).map((field) => (
+            field.label && field.value && <span key={field.id}>{field.label}: {field.value}</span>
+          ))}
         </div>
       </header>
 

@@ -111,6 +111,42 @@ export default function CreativeTemplate({ data }: Props) {
           </section>
         ) : null;
 
+      case "custom":
+        return (data.customSections || []).length > 0 ? (
+          <div key="custom">
+            {(data.customSections || []).map((section) => (
+              <section key={section.id} style={{ marginBottom: sectionGap, breakInside: "avoid-page" }}>
+                <h2 style={{ fontSize: "12px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "2px", color: accent, marginBottom: "10px" }}>
+                  {section.title}
+                </h2>
+                <p style={{ fontSize: denseMode ? "13px" : "14px", color: "#1e293b", lineHeight: "1.55", margin: 0, borderLeft: `4px solid ${accent}`, paddingLeft: "15px", whiteSpace: "pre-wrap" }}>
+                  {section.content}
+                </p>
+              </section>
+            ))}
+          </div>
+        ) : null;
+
+      case "publications":
+        return (data.publications || []).length > 0 ? (
+          <div key="publications">
+            {(data.publications || []).map((pub) => (
+              <section key={pub.id} style={{ marginBottom: sectionGap, breakInside: "avoid-page" }}>
+                <h2 style={{ fontSize: "12px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "2px", color: accent, marginBottom: "10px" }}>
+                  Publication
+                </h2>
+                <div style={{ paddingLeft: "15px", borderLeft: `4px solid ${accent}` }}>
+                  <p style={{ fontSize: "15px", fontWeight: 800, color: "#0f172a", margin: 0 }}>{pub.title}</p>
+                  <p style={{ fontSize: "12px", color: "#475569", margin: "4px 0" }}>{pub.authors}</p>
+                  <p style={{ fontSize: "11px", fontWeight: 700, color: accent, margin: 0 }}>
+                    {pub.venue} — {pub.year}
+                  </p>
+                </div>
+              </section>
+            ))}
+          </div>
+        ) : null;
+
       default:
         return null;
     }
@@ -141,6 +177,10 @@ export default function CreativeTemplate({ data }: Props) {
             {p.location && <span>{p.location}</span>}
             {p.linkedin && <span>in/{p.linkedin}</span>}
             {p.website && <span>{p.website}</span>}
+            {p.github && <span>gh/{p.github}</span>}
+            {(p.customFields || []).map((field) => (
+              field.label && field.value && <span key={field.id}>{field.label}: {field.value}</span>
+            ))}
           </div>
         </div>
       </header>

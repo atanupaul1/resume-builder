@@ -11,7 +11,6 @@ export function createDefaultResumeDraft(): ResumeData {
     workExperience: [...defaultResumeData.workExperience],
     education: [...defaultResumeData.education],
     skillGroups: [...defaultResumeData.skillGroups],
-    contact: { ...defaultResumeData.contact },
     sectionOrder: [...defaultResumeData.sectionOrder],
   };
 }
@@ -37,16 +36,28 @@ export function loadResumeDraft(): ResumeData {
       },
       workExperience: parsed.workExperience ?? [],
       education: parsed.education ?? [],
-      skillGroups: parsed.skillGroups ?? [],
-      contact: {
-        ...defaultResumeData.contact,
-        ...parsed.contact,
-      },
+      skillGroups: (parsed.skillGroups ?? []).map(group => ({
+        ...group,
+        skills: (group.skills ?? []).map(skill => {
+          if (typeof skill === 'string') return skill;
+          if (typeof skill === 'object' && skill !== null) {
+            // Recover from corrupted {0: 'a', 1: 'b'} spread string objects
+            const str = Object.keys(skill)
+              .filter(k => !isNaN(Number(k)))
+              .sort((a, b) => Number(a) - Number(b))
+              .map(k => (skill as any)[k])
+              .join('');
+            return str || (skill as any).name || "Unknown Skill";
+          }
+          return String(skill);
+        })
+      })),
       template: parsed.template || defaultResumeData.template,
-      sectionOrder:
-        parsed.sectionOrder && parsed.sectionOrder.length > 0
-          ? parsed.sectionOrder
-          : [...defaultResumeData.sectionOrder],
+      sectionOrder: (() => {
+        const order = parsed.sectionOrder?.filter((k) => defaultResumeData.sectionOrder.includes(k));
+        return order && order.length > 0 ? order : [...defaultResumeData.sectionOrder];
+      })(),
+      hiddenSections: parsed.hiddenSections?.filter((k) => defaultResumeData.sectionOrder.includes(k)) || [],
     };
   } catch {
     return createDefaultResumeDraft();

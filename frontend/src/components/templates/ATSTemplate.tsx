@@ -39,6 +39,9 @@ export default function ATSTemplate({ data }: Props) {
               {p.email && <span>{p.email}</span>}{p.phone && <span>| {p.phone}</span>}
               {p.location && <span>| {p.location}</span>}{p.linkedin && <span>| {p.linkedin}</span>}
               {p.website && <span>| {p.website}</span>}
+              {(p.customFields || []).map((field) => (
+                field.label && field.value && <span key={field.id}>| {field.label}: {field.value}</span>
+              ))}
             </div>
           </div>
         </div>
@@ -113,9 +116,30 @@ export default function ATSTemplate({ data }: Props) {
         </div>
       </section>
     ) : null,
+    custom: (data.customSections || []).length > 0 ? (
+      <div key="custom">
+        {(data.customSections || []).map((section) => (
+          <section key={section.id} style={{ marginBottom: "14px" }}>
+            <ATSTitle label={section.title.toUpperCase()} />
+            <p style={{ fontSize: "12px", color: "#111", lineHeight: "1.65", margin: 0, whiteSpace: "pre-wrap" }}>{section.content}</p>
+          </section>
+        ))}
+      </div>
+    ) : null,
+    publications: (data.publications || []).length > 0 ? (
+      <section key="publications" style={{ marginBottom: "14px" }}>
+        <ATSTitle label="PUBLICATIONS" />
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          {(data.publications || []).map((pub) => (
+            <div key={pub.id} style={{ fontSize: "12px", color: "#111", lineHeight: "1.4" }}>
+              <span style={{ fontWeight: 700 }}>{pub.title}</span>. {pub.authors}. <i>{pub.venue}</i> ({pub.year}).
+              {pub.doi && <span style={{ marginLeft: "4px" }}>DOI: {pub.doi}</span>}
+            </div>
+          ))}
+        </div>
+      </section>
+    ) : null,
 
-    // ATS usually embeds contact inside personalInfo, so we return null for explicit 'contact' block
-    contact: null,
   };
 
   return (

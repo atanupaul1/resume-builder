@@ -35,17 +35,17 @@ export default function ModernTemplate({ data }: Props) {
   const accent = data.accentColor || "#6C63FF";
   const accentLight = `${accent}18`;
 
-  // Split sectionOrder into sidebar (skills, education, contact) vs main (rest)
-  const sidebarKeys: SectionKey[] = ["skills", "education", "contact"];
-  const mainKeys: SectionKey[] = ["summary", "workExperience"];
+  // Split sectionOrder into sidebar (skills, education, personalInfo) vs main (rest)
+  const sidebarKeys: SectionKey[] = ["skills", "education", "personalInfo", "custom", "publications"];
+  const mainKeys: SectionKey[] = ["summary", "workExperience", "custom", "publications"];
 
   // Ordered lists respecting sectionOrder
   const orderedSidebar = sectionOrder.filter((k) => sidebarKeys.includes(k));
   const orderedMain = sectionOrder.filter((k) => mainKeys.includes(k));
 
   const sidebarSections: Record<SectionKey, React.ReactNode> = {
-    contact: (p.email || p.phone || p.location || p.linkedin || p.website) ? (
-      <div key="contact" style={{ marginBottom: "24px" }}>
+    personalInfo: (p.email || p.phone || p.location || p.linkedin || p.website || p.github) ? (
+      <div key="personalInfo" style={{ marginBottom: "24px" }}>
         <SidebarTitle label="Contact" accent={accent} />
         <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
           {p.email && <div style={{ display: "flex", gap: "6px" }}><span style={{ fontSize: "10px", color: "#9ca3af" }}>✉</span><span style={{ fontSize: "10px", color: "#374151", wordBreak: "break-all" }}>{p.email}</span></div>}
@@ -53,6 +53,15 @@ export default function ModernTemplate({ data }: Props) {
           {p.location && <div style={{ display: "flex", gap: "6px" }}><span style={{ fontSize: "10px", color: "#9ca3af" }}>⌖</span><span style={{ fontSize: "10px", color: "#374151" }}>{p.location}</span></div>}
           {p.linkedin && <div style={{ display: "flex", gap: "6px" }}><span style={{ fontSize: "10px", color: "#9ca3af" }}>in</span><span style={{ fontSize: "10px", color: "#374151", wordBreak: "break-all" }}>{p.linkedin}</span></div>}
           {p.website && <div style={{ display: "flex", gap: "6px" }}><span style={{ fontSize: "10px", color: "#9ca3af" }}>⬡</span><span style={{ fontSize: "10px", color: "#374151", wordBreak: "break-all" }}>{p.website}</span></div>}
+          {p.github && <div style={{ display: "flex", gap: "6px" }}><span style={{ fontSize: "10px", color: "#9ca3af" }}>gh</span><span style={{ fontSize: "10px", color: "#374151", wordBreak: "break-all" }}>{p.github}</span></div>}
+          {(p.customFields || []).map((field) => (
+            field.label && field.value && (
+              <div key={field.id} style={{ display: "flex", gap: "6px" }}>
+                <span style={{ fontSize: "10px", color: "#9ca3af", fontWeight: 700, minWidth: "14px" }}>{field.label[0].toUpperCase()}</span>
+                <span style={{ fontSize: "10px", color: "#374151", wordBreak: "break-all" }}>{field.value}</span>
+              </div>
+            )
+          ))}
         </div>
       </div>
     ) : null,
@@ -90,8 +99,31 @@ export default function ModernTemplate({ data }: Props) {
         </div>
       </div>
     ) : null,
+    custom: (data.customSections || []).length > 0 ? (
+      <div key="custom">
+        {(data.customSections || []).map((section) => (
+          <div key={section.id} style={{ marginBottom: "20px" }}>
+            <SidebarTitle label={section.title} accent={accent} />
+            <p style={{ fontSize: "10px", color: "#374151", lineHeight: "1.6", margin: 0, whiteSpace: "pre-wrap" }}>{section.content}</p>
+          </div>
+        ))}
+      </div>
+    ) : null,
 
-    personalInfo: null, summary: null, workExperience: null,
+    publications: (data.publications || []).length > 0 ? (
+      <div key="publications">
+        <SidebarTitle label="Publications" accent={accent} />
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {(data.publications || []).map((pub) => (
+            <div key={pub.id} style={{ fontSize: "10px", color: "#374151", lineHeight: "1.4" }}>
+              <span style={{ fontWeight: 700 }}>{pub.title}</span>. <i>{pub.venue}</i> ({pub.year}).
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : null,
+
+    summary: null, workExperience: null,
   };
 
   const mainSections: Record<SectionKey, React.ReactNode> = {
@@ -131,8 +163,35 @@ export default function ModernTemplate({ data }: Props) {
         </div>
       </section>
     ) : null,
+    custom: (data.customSections || []).length > 0 ? (
+      <div key="custom">
+        {(data.customSections || []).map((section) => (
+          <section key={section.id} style={{ marginBottom: "24px" }}>
+            <MainTitle label={section.title} />
+            <p style={{ fontSize: "12px", color: "#4b5563", lineHeight: "1.75", margin: 0, whiteSpace: "pre-wrap" }}>{section.content}</p>
+          </section>
+        ))}
+      </div>
+    ) : null,
+    publications: (data.publications || []).length > 0 ? (
+      <section key="publications" style={{ marginBottom: "24px" }}>
+        <MainTitle label="Publications" />
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          {(data.publications || []).map((pub) => (
+            <div key={pub.id}>
+              <p style={{ fontSize: "12px", fontWeight: 700, color: "#111827", margin: 0 }}>{pub.title}</p>
+              <p style={{ fontSize: "11px", color: "#4b5563", margin: "2px 0 0" }}>{pub.authors}</p>
+              <p style={{ fontSize: "11px", color: accent, fontWeight: 500, margin: "2px 0 0" }}>
+                <i>{pub.venue}</i>, {pub.year}
+                {pub.doi && <span style={{ marginLeft: "8px", color: "#9ca3af", fontSize: "10px" }}>DOI: {pub.doi}</span>}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+    ) : null,
 
-    personalInfo: null, education: null, skills: null, contact: null,
+    personalInfo: null, education: null, skills: null,
   };
 
   return (
