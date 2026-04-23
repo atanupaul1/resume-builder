@@ -211,15 +211,15 @@ export default function BuilderPage() {
   const completionMap = getCompletionMap(resumeData);
 
   return (
-    <div className="h-screen flex flex-col bg-[radial-gradient(circle_at_top_left,_rgba(99,102,241,0.08),_transparent_30%),linear-gradient(180deg,_#faf8f3_0%,_#f4f1e8_100%)]">
+    <div className="h-screen flex flex-col bg-[radial-gradient(circle_at_top_left,_rgba(163,52,74,0.05),_transparent_30%),linear-gradient(180deg,_#F5EDE2_0%,_#E7D4BB_100%)]">
       <header className="h-16 flex items-center justify-between px-4 sm:px-6 bg-white/75 backdrop-blur-xl border-b border-white/70 flex-shrink-0 z-50 shadow-[0_1px_0_rgba(15,23,42,0.03)]">
         <div className="flex items-center gap-4 sm:gap-8 min-w-0">
           <Link href="/" className="flex items-center gap-2 group shrink-0">
             <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-100 group-hover:scale-105 transition-transform text-white">
               <HugeiconsIcon icon={DashboardSquare01Icon} size={16} />
             </div>
-            <span className="font-black text-gray-900 tracking-tight hidden sm:block">
-              CV<span className="text-indigo-600">.io</span>
+            <span className="font-display font-black text-brand-nav tracking-tight hidden sm:block">
+              CV<span className="text-brand-rose">.io</span>
             </span>
           </Link>
 
@@ -229,7 +229,7 @@ export default function BuilderPage() {
             {isEditingTitle ? (
               <input
                 autoFocus
-                className="min-w-0 max-w-[14rem] sm:max-w-[22rem] text-sm font-bold text-gray-900 border border-indigo-100 bg-white rounded-full px-3 py-1.5 outline-none shadow-sm focus:ring-2 focus:ring-indigo-100"
+                className="min-w-0 max-w-[14rem] sm:max-w-[22rem] text-sm font-bold text-brand-nav border border-brand-rose/10 bg-white rounded-full px-3 py-1.5 outline-none shadow-sm focus:ring-2 focus:ring-brand-rose/10"
                 value={resumeTitle}
                 onChange={(e) => setResumeTitle(e.target.value)}
                 onBlur={() => setIsEditingTitle(false)}
@@ -237,7 +237,7 @@ export default function BuilderPage() {
               />
             ) : (
               <button
-                className="group flex items-center gap-2 text-sm font-bold text-gray-900 hover:text-indigo-600 transition-colors truncate"
+                className="group flex items-center gap-2 text-sm font-bold text-brand-nav hover:text-brand-rose transition-colors truncate"
                 onClick={() => setIsEditingTitle(true)}
               >
                 <span className="truncate max-w-[10rem] sm:max-w-[18rem]">{resumeTitle}</span>
@@ -280,7 +280,7 @@ export default function BuilderPage() {
           <button
             onClick={handleExportPDF}
             disabled={exporting}
-            className="hidden sm:flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-white bg-gray-900 rounded-full hover:bg-gray-800 transition-all shadow-lg shadow-gray-200 active:scale-95 disabled:opacity-50"
+            className="hidden sm:flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-white bg-brand-nav rounded-full hover:bg-brand-plum transition-all shadow-lg shadow-brand-plum/10 active:scale-95 disabled:opacity-50"
           >
             <HugeiconsIcon icon={FileDownloadIcon} size={16} className={exporting ? "animate-bounce" : ""} />
             {exporting ? "Exporting..." : "Download PDF"}

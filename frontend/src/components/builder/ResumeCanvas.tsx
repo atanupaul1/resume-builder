@@ -41,7 +41,7 @@ export default function ResumeCanvas({ data }: Props) {
     data.skillGroups.length > 0;
 
   return (
-    <div ref={containerRef} className="flex-1 overflow-auto flex items-start justify-center py-6 sm:py-8 px-4 sm:px-5 bg-[radial-gradient(circle_at_top,_rgba(15,23,42,0.05),_transparent_35%),linear-gradient(180deg,_#efece4_0%,_#f5f2ea_100%)]">
+    <div ref={containerRef} className="flex-1 overflow-auto flex items-start justify-center py-6 sm:py-8 px-4 sm:px-5 bg-[radial-gradient(circle_at_top,_rgba(163,52,74,0.03),_transparent_35%),linear-gradient(180deg,_#F5EDE2_0%,_#E7D4BB_100%)]">
       <div className="relative origin-top" style={{ transform: `scale(${scale})`, width: "794px" }}>
         <div className="mb-3 flex items-center justify-between px-1">
           <p className="text-[10px] uppercase tracking-[0.25em] text-gray-500 font-black">Preview</p>

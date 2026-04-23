@@ -1,27 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap');
+
 @import "tailwindcss";
 
 :root {
-  --background: #f5f2e8;
-  --foreground: #161617;
-  --surface: #ffffff;
-  --surface-muted: #fbfaf7;
-  --border-subtle: rgba(15, 23, 42, 0.08);
-  --shadow-soft: 0 24px 70px rgba(15, 23, 42, 0.08);
+  /* Discussed "Luxury Stationery" Palette */
+  --bg-almond: #E7D4BB;
+  --bg-surface: #F5EDE2;
+  --text-carbon: #101211;
+  --text-sandlewood: #857861;
+  --nav-green-velvet: #29281E;
+  --accent-plum: #48252F;
+  --accent-rose: #A3344A;
+  --accent-rose-hover: #C4425D;
+
+  /* Functional mappings */
+  --background: var(--bg-almond);
+  --foreground: var(--text-carbon);
+  --surface: var(--bg-surface);
+  --border-subtle: rgba(41, 40, 30, 0.1);
+  --shadow-soft: 0 24px 70px rgba(16, 18, 17, 0.1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-nunito);
+  --color-surface: var(--surface);
+  --color-brand-nav: var(--nav-green-velvet);
+  --color-brand-plum: var(--accent-plum);
+  --color-brand-rose: var(--accent-rose);
+  --color-brand-rose-hover: var(--accent-rose-hover);
+  --color-brand-sandlewood: var(--text-sandlewood);
+
+  /* Overriding default Tailwind colors to match the palette */
+  --color-indigo-50: #fdfaf7;
+  --color-indigo-100: #f5ede2;
+  --color-indigo-200: #e7d4bb;
+  --color-indigo-300: #d5ccab;
+  --color-indigo-400: #a3344a;
+  --color-indigo-500: #a3344a;
+  --color-indigo-600: #a3344a;
+  --color-indigo-700: #48252f;
+  --color-indigo-800: #29281e;
+  --color-indigo-900: #101211;
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   background-image:
-    radial-gradient(circle at top left, rgba(99, 102, 241, 0.08), transparent 28%),
-    radial-gradient(circle at top right, rgba(14, 165, 233, 0.08), transparent 24%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+    radial-gradient(circle at top left, rgba(163, 52, 74, 0.05), transparent 28%),
+    radial-gradient(circle at top right, rgba(41, 40, 30, 0.05), transparent 24%),
+    linear-gradient(180deg, rgba(245, 237, 226, 0.3), rgba(231, 212, 187, 0));
   background-attachment: fixed;
 }
 

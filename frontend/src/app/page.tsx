@@ -19,7 +19,7 @@ export default function LandingPage() {
             <div className="p-1.5 bg-gradient-to-br from-indigo-600 to-cyan-600 rounded-xl shadow-lg shadow-indigo-100 transition-transform hover:scale-105">
               <HugeiconsIcon icon={DashboardSquare01Icon} size={20} color="white" />
             </div>
-            <span className="font-black text-xl tracking-tighter text-gray-900">CV.io</span>
+            <span className="font-display font-black text-xl tracking-tighter text-brand-nav">CV.io</span>
           </div>
           <Link
             href="/builder"
@@ -40,10 +40,10 @@ export default function LandingPage() {
             <span className="inline-block px-4 py-1.5 bg-white/80 text-indigo-700 text-xs font-black uppercase tracking-[0.25em] rounded-full mb-6 border border-indigo-100 shadow-sm">
               Career Tool
             </span>
-            <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black text-gray-900 leading-[0.92] tracking-tighter mb-8">
+            <h1 className="text-5xl sm:text-6xl lg:text-8xl font-display font-black text-indigo-900 leading-[0.92] tracking-tighter mb-8">
               Build your resume,
               <br />
-              <span className="text-indigo-700 px-4 inline-block bg-indigo-50/80 rotate-[-2deg] rounded-2xl mt-2">
+              <span className="text-brand-rose px-4 inline-block bg-brand-rose/10 rotate-[-2deg] rounded-2xl mt-2">
                 your way.
               </span>
             </h1>
@@ -53,7 +53,7 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
               <Link
                 href="/templates"
-                className="px-8 py-4 bg-gray-900 text-white rounded-full font-bold text-base sm:text-lg hover:bg-gray-800 transition-all flex items-center gap-2 shadow-2xl shadow-gray-200 active:scale-95"
+                className="px-8 py-4 bg-brand-nav text-white rounded-full font-bold text-base sm:text-lg hover:bg-brand-plum transition-all flex items-center gap-2 shadow-2xl shadow-brand-plum/10 active:scale-95"
               >
                 Choose Template
                 <HugeiconsIcon icon={ArrowRight01Icon} size={20} />
@@ -92,7 +92,7 @@ export default function LandingPage() {
           className="max-w-5xl mx-auto p-8 sm:p-12 bg-gray-900 rounded-[40px] sm:rounded-[48px] text-center relative overflow-hidden shadow-2xl shadow-gray-200"
         >
           <div className="relative z-10">
-            <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tighter mb-8 leading-tight">
+            <h2 className="text-4xl sm:text-5xl font-display font-black text-white tracking-tighter mb-8 leading-tight">
               Ready to land your <br /> dream job?
             </h2>
             <Link
@@ -113,8 +113,8 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center gap-2">
             <div className="flex items-center gap-2">
-              <HugeiconsIcon icon={DashboardSquare01Icon} size={20} className="text-indigo-600" />
-              <span className="font-bold text-gray-900 tracking-tighter">CV.io</span>
+              <HugeiconsIcon icon={DashboardSquare01Icon} size={20} className="text-brand-rose" />
+              <span className="font-display font-bold text-brand-nav tracking-tighter">CV.io</span>
             </div>
             <span className="text-xs font-bold text-gray-600 mt-2">Made by Atanu and Swetasri</span>
           </div>

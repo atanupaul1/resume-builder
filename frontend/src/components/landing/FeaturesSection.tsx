@@ -86,7 +86,7 @@ export const FeaturesSection = () => {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-6"
           >
-            Everything you <span className="text-indigo-600">need.</span>
+            Everything you <span className="text-brand-rose">need.</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -106,8 +106,8 @@ export const FeaturesSection = () => {
           >
             <FeatureCard
               icon={DragDropIcon}
-              iconBg="bg-blue-50"
-              iconColor="text-blue-600"
+              iconBg="bg-brand-rose/10"
+              iconColor="text-brand-rose"
               title="Drag & drop builder"
               description="Reorder sections fast. See changes in live A4 preview."
             >
@@ -129,8 +129,8 @@ export const FeaturesSection = () => {
 
           <FeatureCard
             icon={File01Icon}
-            iconBg="bg-violet-50"
-            iconColor="text-violet-600"
+            iconBg="bg-brand-plum/10"
+            iconColor="text-brand-plum"
             title="Template switching"
             description="Swap styles while keeping same resume data and structure."
           >
@@ -147,7 +147,7 @@ export const FeaturesSection = () => {
                 >
                   <span className="text-xs font-bold">{template}</span>
                   {activeTemplate === template && (
-                    <span className="text-[10px] font-bold uppercase tracking-wide text-violet-600">Active</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wide text-brand-plum">Active</span>
                   )}
                 </button>
               ))}
@@ -163,8 +163,8 @@ export const FeaturesSection = () => {
           >
             <FeatureCard
               icon={Pdf01Icon}
-              iconBg="bg-rose-50"
-              iconColor="text-rose-600"
+              iconBg="bg-brand-plum/20"
+              iconColor="text-brand-plum"
               title="One-click PDF export"
               description="High-quality exports ready for internship and job applications."
             >
